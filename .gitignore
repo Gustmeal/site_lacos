@@ -1,0 +1,99 @@
+# ============================================
+# Site Laços - .gitignore
+# ============================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+develop-eggs/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Variáveis de ambiente (NUNCA commitar - contém senhas!) ---
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# --- Flask ---
+instance/
+.webassets-cache
+flask_session/
+
+# --- Banco de dados local ---
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# --- Logs ---
+*.log
+logs/
+log/
+
+# --- Testes e cobertura ---
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# --- IDEs e editores ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*~
+.project
+.pydevproject
+
+# --- Sistema operacional ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Node (caso usemos no futuro) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Arquivos temporários ---
+*.tmp
+*.bak
+*.backup
+*.old
