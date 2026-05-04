@@ -59,57 +59,6 @@ def create_app(config_name=None):
     # Registra handlers de erro
     _register_error_handlers(app)
 
-    # Rota temporária de "Hello World" (será removida na Sprint 1)
-    @app.route("/")
-    def hello():
-        return """
-        <!DOCTYPE html>
-        <html lang="pt-BR">
-        <head>
-            <meta charset="UTF-8">
-            <title>Site Laços - Em construção</title>
-            <style>
-                body {
-                    font-family: -apple-system, sans-serif;
-                    background: linear-gradient(135deg, #5BA3D0, #88C088);
-                    min-height: 100vh;
-                    margin: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    text-align: center;
-                }
-                .container {
-                    padding: 2rem;
-                    background: rgba(255,255,255,0.1);
-                    border-radius: 1rem;
-                    backdrop-filter: blur(10px);
-                    max-width: 500px;
-                }
-                h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-                p { font-size: 1.2rem; line-height: 1.6; }
-                .badge {
-                    display: inline-block;
-                    background: rgba(255,255,255,0.2);
-                    padding: 0.5rem 1rem;
-                    border-radius: 2rem;
-                    margin-top: 1rem;
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>🚀 Site Laços</h1>
-                <p>Sprint 0 concluída com sucesso!</p>
-                <p>Em breve, o site institucional da Associação de Clubes de Brasília.</p>
-                <div class="badge">Em construção</div>
-            </div>
-        </body>
-        </html>
-        """
-
     @app.route("/health")
     def health():
         """Endpoint para monitoramento (verifica se a app está viva)."""
@@ -131,10 +80,8 @@ def _initialize_extensions(app):
 
 def _register_blueprints(app):
     """Registra os blueprints (módulos de rotas)."""
-    # Blueprints serão adicionados nas próximas sprints
-    # from app.blueprints.public import public_bp
-    # app.register_blueprint(public_bp)
-    pass
+    from app.blueprints.public import public_bp
+    app.register_blueprint(public_bp)
 
 
 def _register_error_handlers(app):

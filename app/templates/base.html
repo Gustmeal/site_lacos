@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}Associação Laços - Clubes de Brasília. Conhecimento, comunidade e crescimento para crianças e jovens.{% endblock %}">
+
+    <title>{% block title %}Associação Laços - Clubes de Brasília{% endblock %}</title>
+
+    <!-- Favicon (vamos adicionar arquivo real depois) -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+
+    <!-- Google Fonts: Nunito (acolhedora, moderna, legível) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuração customizada do Tailwind com a paleta da Laços -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta principal (versão suave do logo)
+                        'lacos-coral': '#F08080',
+                        'lacos-azul': '#5BA3D0',
+                        'lacos-verde': '#88C088',
+                        'lacos-mostarda': '#F0C674',
+
+                        // Variações para hover/active
+                        'lacos-azul-escuro': '#4A8FBF',
+                        'lacos-coral-escuro': '#D96B6B',
+                        'lacos-verde-escuro': '#6FA86F',
+                    },
+                    fontFamily: {
+                        'sans': ['Nunito', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'soft-lg': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS customizado adicional -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body class="font-sans bg-white text-gray-800 flex flex-col min-h-screen">
+
+    <!-- HEADER (menu) -->
+    {% include 'components/header.html' %}
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER (rodapé) -->
+    {% include 'components/footer.html' %}
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - Associação Laços{% endblock %}
+
+{% block content %}
+
+<!-- Banner Principal (versão simples - melhoraremos no próximo pacote) -->
+<section class="bg-gradient-to-br from-lacos-azul via-lacos-azul-escuro to-lacos-coral text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Associação de Clubes <br>de Brasília
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Construindo laços de comunidade, formação e crescimento.
+        </p>
+        <a href="{{ url_for('public.quem_somos') }}"
+           class="inline-block bg-white text-lacos-azul px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-soft-lg">
+            Saiba Mais →
+        </a>
+    </div>
+</section>
+
+<!-- Mensagem temporária -->
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+            🎉 Layout Base Funcionando!
+        </h2>
+        <p class="text-lg text-gray-600 mb-6">
+            Esta é uma versão temporária. No próximo pacote, vamos completar com:
+        </p>
+        <ul class="text-left max-w-md mx-auto space-y-2 text-gray-700">
+            <li class="flex items-center gap-2">
+                <span class="text-lacos-verde">✓</span> Banner com imagem de fundo
+            </li>
+            <li class="flex items-center gap-2">
+                <span class="text-lacos-verde">✓</span> Seção de destaque dos 10 clubes
+            </li>
+            <li class="flex items-center gap-2">
+                <span class="text-lacos-verde">✓</span> Seção de atividades oferecidas
+            </li>
+            <li class="flex items-center gap-2">
+                <span class="text-lacos-verde">✓</span> Seção de eventos
+            </li>
+            <li class="flex items-center gap-2">
+                <span class="text-lacos-verde">✓</span> Call-to-action de contato
+            </li>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}

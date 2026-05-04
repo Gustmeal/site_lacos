@@ -27,6 +27,25 @@ login_manager.login_view = "admin.login"  # Onde redirecionar se não logado
 login_manager.login_message = "Por favor, faça login para acessar essa página."
 login_manager.login_message_category = "info"
 
+
+# ============================================
+# USER LOADER TEMPORÁRIO
+# ============================================
+# Flask-Login exige uma função user_loader registrada.
+# Como ainda não temos o modelo Usuario (vai ser criado na Sprint 5),
+# registramos uma função stub que retorna None por enquanto.
+# Quando criarmos o modelo Usuario, substituímos por busca real no banco.
+@login_manager.user_loader
+def load_user(user_id):
+    """
+    Carrega um usuário pelo ID.
+
+    Por enquanto retorna None pois ainda não temos modelo Usuario.
+    Será substituído na Sprint 5 quando criarmos autenticação.
+    """
+    return None
+
+
 # Hash de senhas
 bcrypt = Bcrypt()
 

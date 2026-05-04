@@ -1,0 +1,64 @@
+/* ============================================
+   Site Laços - Estilos Customizados
+   ============================================
+   Tailwind cuida de 95% do estilo. Esse arquivo é só
+   para detalhes específicos que o Tailwind não cobre.
+*/
+
+/* Smooth scroll quando clicar em links âncora */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Customização da scrollbar (Webkit - Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Animação fade-in para elementos que entram na tela */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Hover suave em cards */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Tamanho mínimo de toque para botões em mobile (44x44px - padrão Apple) */
+@media (max-width: 768px) {
+    button, a.btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
