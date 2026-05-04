@@ -10,11 +10,11 @@ HEADER PRINCIPAL DO SITE LAÇOS
         <div class="flex justify-between items-center h-16 md:h-20">
 
             <!-- LOGO -->
-            <a href="{{ url_for('public.home') }}" class="flex items-center gap-2 hover:opacity-80 transition">
-                <!-- Placeholder do logo (substituir pelo SVG real depois) -->
-                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-lacos-azul via-lacos-coral to-lacos-mostarda rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    L
-                </div>
+            <a href="{{ url_for('public.home') }}" class="flex items-center gap-3 hover:opacity-80 transition">
+                <!-- Logo oficial da Associação Laços -->
+                <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+                     alt="Logo da Associação Laços"
+                     class="h-10 md:h-12 w-auto">
                 <span class="text-xl md:text-2xl font-bold text-gray-800">
                     Laços
                 </span>
