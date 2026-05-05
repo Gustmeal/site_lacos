@@ -38,12 +38,17 @@ login_manager.login_message_category = "info"
 @login_manager.user_loader
 def load_user(user_id):
     """
-    Carrega um usuário pelo ID.
+    Carrega um usuário pelo ID a partir do banco de dados.
 
-    Por enquanto retorna None pois ainda não temos modelo Usuario.
-    Será substituído na Sprint 5 quando criarmos autenticação.
+    Args:
+        user_id: ID do usuário (string do session).
+
+    Returns:
+        Instância do Usuario ou None se não encontrado.
     """
-    return None
+    # Import dentro da função para evitar import circular
+    from app.models.usuario import Usuario
+    return Usuario.query.get(int(user_id))
 
 
 # Hash de senhas

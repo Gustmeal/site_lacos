@@ -22,25 +22,12 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "fallback-dev-key-mude-isso"
 
     # Banco de dados
+    # Em desenvolvimento usa SQLite local com caminho absoluto.
+    # Em produção (Railway), usa DATABASE_URL fornecido pelo PostgreSQL.
+    _instance_db_path = basedir / "instance" / "site_lacos.db"
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
-        f"sqlite:///{basedir / 'instance' / 'site_lacos.db'}"
+        f"sqlite:///{_instance_db_path.as_posix()}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # Configurações de e-mail
-    MAIL_SERVER = os.environ.get("MAIL_SERVER")
-    MAIL_PORT = int(os.environ.get("MAIL_PORT", 587))
-    MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS", "True") == "True"
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")
-
-    # Pasta de uploads (para fotos dos clubes, etc)
-    UPLOAD_FOLDER = basedir / "app" / "static" / "uploads"
-    MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10 MB
-
-    # Configurações gerais
-    POSTS_PER_PAGE = 10
-
 
 class DevelopmentConfig(Config):
     """Configuração para desenvolvimento local."""

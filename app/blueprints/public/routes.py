@@ -11,18 +11,25 @@ from app.data.clubes_data import (
     get_clubes_por_categoria,
     get_estatisticas,
 )
+from app.data.atividades_data import (
+    get_todas_atividades,
+    get_atividades_destaque,
+    get_total_atividades,
+)
 
 
 @public_bp.route("/")
 def home():
     """Página inicial do site."""
-    # Pega os 6 primeiros clubes para destaque na home
     clubes_destaque = get_clubes_destaque(quantidade=6)
     estatisticas = get_estatisticas()
+    atividades_destaque = get_atividades_destaque(quantidade=4)
     return render_template(
         "pages/home.html",
         clubes_destaque=clubes_destaque,
         estatisticas=estatisticas,
+        atividades_destaque=atividades_destaque,
+        total_atividades=get_total_atividades(),
     )
 
 
@@ -35,7 +42,12 @@ def quem_somos():
 @public_bp.route("/atividades")
 def atividades():
     """Página com as 10 atividades oferecidas."""
-    return render_template("pages/atividades.html")
+    todas_atividades = get_todas_atividades()
+    return render_template(
+        "pages/atividades.html",
+        atividades=todas_atividades,
+        total=get_total_atividades(),
+    )
 
 
 @public_bp.route("/clubes")
