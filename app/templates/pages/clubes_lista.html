@@ -9,7 +9,7 @@
 <!-- ============================================
      BANNER DA PÁGINA
      ============================================ -->
-<section class="bg-gradient-to-br from-lacos-azul via-lacos-azul-escuro to-lacos-coral text-white py-20 md:py-28">
+<section class="bg-gradient-to-br from-lacos-azul via-lacos-azul-escuro to-lacos-vermelho text-white py-20 md:py-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-4">
             Nossos Clubes
@@ -31,15 +31,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="flex flex-wrap gap-2 md:gap-4 -mb-px" aria-label="Filtros de categoria">
             <a href="#todos"
-               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-lacos-azul text-lacos-amarelo font-bold whitespace-nowrap"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-lacos-azul text-lacos-marinho font-bold whitespace-nowrap"
                data-filter="todos">
                 Todos
-                <span class="ml-2 px-2 py-0.5 bg-lacos-azul/10 text-lacos-amarelo-escuro rounded-full text-xs">
+                <span class="ml-2 px-2 py-0.5 bg-lacos-azul/10 text-lacos-marinho rounded-full text-xs">
                     {{ estatisticas.total }}
                 </span>
             </a>
             <a href="#infantil"
-               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-amarelo font-bold whitespace-nowrap transition"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-marinho font-bold whitespace-nowrap transition"
                data-filter="infantil">
                 Clubes Infantis
                 <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs">
@@ -47,7 +47,7 @@
                 </span>
             </a>
             <a href="#juvenil"
-               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-amarelo font-bold whitespace-nowrap transition"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-marinho font-bold whitespace-nowrap transition"
                data-filter="juvenil">
                 Clubes Juvenis
                 <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs">
@@ -65,8 +65,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="flex items-center gap-4 mb-8 md:mb-12">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-coral/10 rounded-xl">
-                <svg class="w-6 h-6 text-lacos-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-vermelho/10 rounded-xl">
+                <svg class="w-6 h-6 text-lacos-vermelho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
                 </svg>
             </div>
@@ -130,7 +130,7 @@
                 Entre em contato para saber mais sobre as listas de espera, atividades e como ingressar em um de nossos clubes.
             </p>
             <a href="#contato"
-               class="inline-flex items-center gap-2 bg-white text-lacos-amarelo px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-soft">
+               class="inline-flex items-center gap-2 bg-white text-lacos-marinho px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-soft">
                 Fale conosco
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
@@ -149,25 +149,25 @@
         tab.addEventListener('click', function(e) {
             // Remove estado ativo de todas
             document.querySelectorAll('.filter-tab').forEach(t => {
-                t.classList.remove('border-lacos-azul', 'text-lacos-amarelo');
+                t.classList.remove('border-lacos-azul', 'text-lacos-marinho');
                 t.classList.add('border-transparent', 'text-gray-600');
 
                 // Reset do badge
                 const badge = t.querySelector('span');
                 if (badge) {
-                    badge.classList.remove('bg-lacos-azul/10', 'text-lacos-amarelo-escuro');
+                    badge.classList.remove('bg-lacos-azul/10', 'text-lacos-marinho');
                     badge.classList.add('bg-gray-100', 'text-gray-700');
                 }
             });
 
             // Ativa a clicada
-            this.classList.add('border-lacos-azul', 'text-lacos-amarelo');
+            this.classList.add('border-lacos-azul', 'text-lacos-marinho');
             this.classList.remove('border-transparent', 'text-gray-600');
 
             // Ativa o badge
             const badge = this.querySelector('span');
             if (badge) {
-                badge.classList.add('bg-lacos-azul/10', 'text-lacos-amarelo-escuro');
+                badge.classList.add('bg-lacos-azul/10', 'text-lacos-marinho');
                 badge.classList.remove('bg-gray-100', 'text-gray-700');
             }
         });
