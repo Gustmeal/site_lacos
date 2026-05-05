@@ -11,7 +11,8 @@ Padrão Application Factory:
 """
 
 import os
-from flask import Flask, render_template
+from pathlib import Path
+from flask import Flask
 from app.config import config_by_name
 from app.extensions import (
     db,
@@ -44,7 +45,16 @@ def create_app(config_name=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_by_name[config_name])
 
-    # Garante que a pasta instance existe (para SQLite)
+    # ==========================================
+    # CRIAÇÃO REFORÇADA DA PASTA INSTANCE
+    # ==========================================
+    # Necessário para SQLite criar o arquivo do banco corretamente.
+    # Cria a pasta na raiz do projeto (caminho absoluto).
+    basedir = Path(__file__).resolve().parent.parent
+    instance_dir = basedir / "instance"
+    instance_dir.mkdir(parents=True, exist_ok=True)
+
+    # Também tenta criar via Flask (redundância de segurança)
     try:
         os.makedirs(app.instance_path, exist_ok=True)
     except OSError:
@@ -77,11 +87,18 @@ def _initialize_extensions(app):
     csrf.init_app(app)
     limiter.init_app(app)
 
+    # IMPORTANTE: Importa os modelos para que o Flask-Migrate os detecte.
+    with app.app_context():
+        from app.models import Usuario, Evento  # noqa: F401
+
 
 def _register_blueprints(app):
     """Registra os blueprints (módulos de rotas)."""
     from app.blueprints.public import public_bp
     app.register_blueprint(public_bp)
+
+    from app.blueprints.admin import admin_bp
+    app.register_blueprint(admin_bp)
 
 
 def _register_error_handlers(app):

@@ -1,0 +1,114 @@
+{% extends 'admin/_base_admin.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center px-4 py-12 bg-lacos-marinho relative overflow-hidden">
+
+    {# Padrão decorativo de fundo #}
+    <div class="absolute inset-0 opacity-[0.06]">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="loginDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="1.5" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#loginDots)"/>
+        </svg>
+    </div>
+
+    <div class="relative w-full max-w-md">
+
+        {# Logo no topo #}
+        <div class="text-center mb-8">
+            <a href="{{ url_for('public.home') }}" class="inline-block mb-4 hover:opacity-80 transition">
+                <img src="{{ url_for('static', filename='img/logo-lacos.svg') }}"
+                     alt="Logo da Associação Laços"
+                     class="h-16 w-auto mx-auto">
+            </a>
+            <p class="text-white/80 text-sm">Painel Administrativo</p>
+        </div>
+
+        {# Card do formulário #}
+        <div class="bg-white rounded-2xl shadow-soft-lg p-8 md:p-10">
+
+            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">
+                Acesse sua conta
+            </h1>
+            <p class="text-gray-600 text-sm mb-6">
+                Entre com seu e-mail e senha para gerenciar o site.
+            </p>
+
+            {# Mensagens flash #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mb-4 px-4 py-3 rounded-lg text-sm
+                            {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                            {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                            {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                            {% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" novalidate>
+                {{ form.hidden_tag() }}
+
+                {# Campo E-mail #}
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.email.label.text }}
+                    </label>
+                    {{ form.email(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {# Campo Senha #}
+                <div class="mb-4">
+                    <label for="senha" class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.senha.label.text }}
+                    </label>
+                    {{ form.senha(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% if form.senha.errors %}
+                        {% for error in form.senha.errors %}
+                            <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {# Lembrar-me #}
+                <div class="mb-6 flex items-center">
+                    {{ form.lembrar_me(class="w-4 h-4 rounded border-gray-300 text-lacos-marinho focus:ring-lacos-marinho") }}
+                    <label for="lembrar_me" class="ml-2 text-sm text-gray-700">
+                        {{ form.lembrar_me.label.text }}
+                    </label>
+                </div>
+
+                {# Botão Submit #}
+                {{ form.submit(class="w-full bg-lacos-marinho text-white py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer") }}
+            </form>
+
+            {# Link voltar para o site #}
+            <div class="mt-6 pt-6 border-t border-gray-100 text-center">
+                <a href="{{ url_for('public.home') }}"
+                   class="text-sm text-gray-600 hover:text-lacos-marinho font-semibold inline-flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+                    </svg>
+                    Voltar para o site
+                </a>
+            </div>
+        </div>
+
+        {# Aviso de segurança #}
+        <p class="text-center text-white/60 text-xs mt-6">
+            Esta área é restrita à administração da Associação Laços.
+        </p>
+    </div>
+</div>
+{% endblock %}
