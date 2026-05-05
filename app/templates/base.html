@@ -24,16 +24,30 @@
             theme: {
                 extend: {
                     colors: {
-                        // Paleta principal (versão suave do logo)
-                        'lacos-coral': '#F08080',
-                        'lacos-azul': '#5BA3D0',
-                        'lacos-verde': '#88C088',
-                        'lacos-mostarda': '#F0C674',
+                        // ===== CORES OFICIAIS DA MARCA LAÇOS (manual de marca) =====
+
+                        // Cor institucional principal (azul marinho)
+                        'lacos-marinho': '#041162',
+                        'lacos-marinho-claro': '#1a2380',
+
+                        // Cores vibrantes do logo
+                        'lacos-vermelho': '#F23D50',
+                        'lacos-azul': '#288ECE',
+                        'lacos-verde': '#70C148',
+                        'lacos-amarelo': '#FFBC3A',
 
                         // Variações para hover/active
-                        'lacos-azul-escuro': '#4A8FBF',
-                        'lacos-coral-escuro': '#D96B6B',
-                        'lacos-verde-escuro': '#6FA86F',
+                        'lacos-vermelho-escuro': '#D62F40',
+                        'lacos-azul-escuro': '#1F77B0',
+                        'lacos-verde-escuro': '#27590E',
+                        'lacos-amarelo-escuro': '#E8A82F',
+
+                        // Versões suaves (10% opacidade visual) para fundos
+                        'lacos-vermelho-suave': '#FDE8EB',
+                        'lacos-azul-suave': '#E5F1F9',
+                        'lacos-verde-suave': '#EAF6E2',
+                        'lacos-amarelo-suave': '#FFF4DD',
+                        'lacos-marinho-suave': '#E5E7F0',
                     },
                     fontFamily: {
                         'sans': ['Nunito', 'system-ui', 'sans-serif'],
@@ -41,6 +55,7 @@
                     boxShadow: {
                         'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
                         'soft-lg': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                        'soft-xl': '0 20px 50px rgba(4, 17, 98, 0.15)',
                     }
                 }
             }

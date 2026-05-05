@@ -1,0 +1,67 @@
+{#
+COMPONENTE: Card de Clube
+- Reutilizável na home e na página de clubes
+- Recebe variável `clube` (dict com dados do clube)
+- Hover sutil, sombra suave, totalmente responsivo
+- Usa paleta oficial da marca (manual)
+#}
+
+<article class="group bg-white rounded-2xl shadow-soft hover:shadow-soft-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+
+    <!-- Cabeçalho colorido com logo -->
+    <div class="relative h-40
+        {% if clube.categoria == 'infantil' %}bg-gradient-to-br from-lacos-vermelho-suave to-lacos-amarelo-suave{% else %}bg-gradient-to-br from-lacos-azul-suave to-lacos-verde-suave{% endif %}
+        flex items-center justify-center p-6">
+
+        <!-- Badge de categoria -->
+        <div class="absolute top-3 right-3">
+            {% if clube.categoria == 'infantil' %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 backdrop-blur-sm text-lacos-vermelho text-xs font-bold rounded-full shadow-sm">
+                <span class="w-2 h-2 bg-lacos-vermelho rounded-full"></span>
+                Infantil
+            </span>
+            {% else %}
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 backdrop-blur-sm text-lacos-verde-escuro text-xs font-bold rounded-full shadow-sm">
+                <span class="w-2 h-2 bg-lacos-verde rounded-full"></span>
+                Juvenil
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- Logo do clube -->
+        <img src="{{ url_for('static', filename=clube.logo) }}"
+             alt="Logo do Clube {{ clube.nome }}"
+             class="max-h-24 max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+             onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/logo-lacos.svg') }}';">
+    </div>
+
+    <!-- Conteúdo do card -->
+    <div class="p-5">
+        <h3 class="text-xl font-bold text-gray-800 mb-1 group-hover:text-lacos-marinho transition-colors">
+            {{ clube.nome }}
+        </h3>
+
+        <div class="flex items-center gap-2 text-gray-500 text-sm mb-3">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+            </svg>
+            <span>{{ clube.regiao }}</span>
+        </div>
+
+        {% if clube.descricao_breve %}
+        <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">
+            {{ clube.descricao_breve }}
+        </p>
+        {% endif %}
+
+        <a href="#"
+           class="inline-flex items-center gap-2 text-lacos-marinho hover:text-lacos-marinho-claro font-semibold text-sm group/link"
+           aria-label="Conhecer o Clube {{ clube.nome }}">
+            Conhecer este clube
+            <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+            </svg>
+        </a>
+    </div>
+</article>

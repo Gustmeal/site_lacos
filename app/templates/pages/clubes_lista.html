@@ -1,14 +1,176 @@
 {% extends 'base.html' %}
 
-{% block title %}Clubes - Associação Laços{% endblock %}
+{% block title %}Nossos Clubes - Associação Laços{% endblock %}
+
+{% block description %}Conheça os {{ estatisticas.total }} clubes da Associação Laços, distribuídos pelas principais regiões do Distrito Federal.{% endblock %}
 
 {% block content %}
-<section class="py-16">
-    <div class="max-w-4xl mx-auto px-4">
-        <h1 class="text-4xl font-bold text-gray-800 mb-6">Nossos Clubes</h1>
-        <p class="text-lg text-gray-600">
-            Página em construção. Os 10 clubes serão listados aqui por categoria.
+
+<!-- ============================================
+     BANNER DA PÁGINA
+     ============================================ -->
+<section class="bg-gradient-to-br from-lacos-azul via-lacos-azul-escuro to-lacos-coral text-white py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold mb-4">
+            Nossos Clubes
+        </span>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+            Encontre o clube ideal para sua família
+        </h1>
+        <p class="text-lg md:text-xl opacity-95 max-w-3xl mx-auto leading-relaxed">
+            {{ estatisticas.total }} clubes distribuídos por {{ estatisticas.regioes }} regiões do Distrito Federal,
+            <br class="hidden md:block">construindo comunidade entre crianças, jovens e suas famílias.
         </p>
     </div>
 </section>
+
+<!-- ============================================
+     NAVEGAÇÃO POR ABAS (Filtro)
+     ============================================ -->
+<section class="bg-white border-b border-gray-200 sticky top-16 md:top-20 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex flex-wrap gap-2 md:gap-4 -mb-px" aria-label="Filtros de categoria">
+            <a href="#todos"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-lacos-azul text-lacos-amarelo font-bold whitespace-nowrap"
+               data-filter="todos">
+                Todos
+                <span class="ml-2 px-2 py-0.5 bg-lacos-azul/10 text-lacos-amarelo-escuro rounded-full text-xs">
+                    {{ estatisticas.total }}
+                </span>
+            </a>
+            <a href="#infantil"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-amarelo font-bold whitespace-nowrap transition"
+               data-filter="infantil">
+                Clubes Infantis
+                <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs">
+                    {{ estatisticas.infantis }}
+                </span>
+            </a>
+            <a href="#juvenil"
+               class="filter-tab px-4 md:px-6 py-4 border-b-2 border-transparent text-gray-600 hover:text-lacos-amarelo font-bold whitespace-nowrap transition"
+               data-filter="juvenil">
+                Clubes Juvenis
+                <span class="ml-2 px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs">
+                    {{ estatisticas.juvenis }}
+                </span>
+            </a>
+        </nav>
+    </div>
+</section>
+
+<!-- ============================================
+     SEÇÃO: CLUBES INFANTIS
+     ============================================ -->
+<section id="infantil" class="py-16 md:py-24 bg-white scroll-mt-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex items-center gap-4 mb-8 md:mb-12">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-coral/10 rounded-xl">
+                <svg class="w-6 h-6 text-lacos-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800">Clubes Infantis</h2>
+                <p class="text-gray-600 mt-1">{{ clubes_infantis|length }} unidades dedicadas às crianças</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {% for clube in clubes_infantis %}
+                {% include 'components/card_clube.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Divisor visual -->
+<div class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="border-t border-gray-200"></div>
+    </div>
+</div>
+
+<!-- ============================================
+     SEÇÃO: CLUBES JUVENIS
+     ============================================ -->
+<section id="juvenil" class="py-16 md:py-24 bg-gray-50 scroll-mt-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex items-center gap-4 mb-8 md:mb-12">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-verde/10 rounded-xl">
+                <svg class="w-6 h-6 text-lacos-verde-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800">Clubes Juvenis</h2>
+                <p class="text-gray-600 mt-1">{{ clubes_juvenis|length }} unidades dedicadas aos jovens</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {% for clube in clubes_juvenis %}
+                {% include 'components/card_clube.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     CTA FINAL
+     ============================================ -->
+<section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-lacos-azul to-lacos-azul-escuro rounded-2xl p-8 md:p-12 text-center text-white shadow-soft-lg">
+            <h2 class="text-2xl md:text-3xl font-extrabold mb-4">
+                Quer fazer parte da comunidade Laços?
+            </h2>
+            <p class="text-lg opacity-95 mb-8 max-w-2xl mx-auto">
+                Entre em contato para saber mais sobre as listas de espera, atividades e como ingressar em um de nossos clubes.
+            </p>
+            <a href="#contato"
+               class="inline-flex items-center gap-2 bg-white text-lacos-amarelo px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-soft">
+                Fale conosco
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+    // Suavizar scroll dos filtros + atualizar aba ativa
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            // Remove estado ativo de todas
+            document.querySelectorAll('.filter-tab').forEach(t => {
+                t.classList.remove('border-lacos-azul', 'text-lacos-amarelo');
+                t.classList.add('border-transparent', 'text-gray-600');
+
+                // Reset do badge
+                const badge = t.querySelector('span');
+                if (badge) {
+                    badge.classList.remove('bg-lacos-azul/10', 'text-lacos-amarelo-escuro');
+                    badge.classList.add('bg-gray-100', 'text-gray-700');
+                }
+            });
+
+            // Ativa a clicada
+            this.classList.add('border-lacos-azul', 'text-lacos-amarelo');
+            this.classList.remove('border-transparent', 'text-gray-600');
+
+            // Ativa o badge
+            const badge = this.querySelector('span');
+            if (badge) {
+                badge.classList.add('bg-lacos-azul/10', 'text-lacos-amarelo-escuro');
+                badge.classList.remove('bg-gray-100', 'text-gray-700');
+            }
+        });
+    });
+</script>
 {% endblock %}
