@@ -33,6 +33,7 @@
     {% endwith %}
 
     <form method="POST" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
         {# Chave de setup #}
         <div class="mb-5">
