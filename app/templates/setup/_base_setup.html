@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{% block title %}Setup{% endblock %} - Laços</title>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'lacos-marinho': '#041162',
+                        'lacos-marinho-claro': '#1a2380',
+                        'lacos-vermelho': '#F23D50',
+                        'lacos-azul': '#288ECE',
+                        'lacos-verde': '#70C148',
+                        'lacos-amarelo': '#FFBC3A',
+                        'lacos-vermelho-escuro': '#D62F40',
+                        'lacos-azul-escuro': '#1F77B0',
+                        'lacos-verde-escuro': '#27590E',
+                        'lacos-amarelo-escuro': '#E8A82F',
+                        'lacos-vermelho-suave': '#FDE8EB',
+                        'lacos-azul-suave': '#E5F1F9',
+                        'lacos-verde-suave': '#EAF6E2',
+                        'lacos-amarelo-suave': '#FFF4DD',
+                        'lacos-marinho-suave': '#E5E7F0',
+                    },
+                    fontFamily: { 'sans': ['Nunito', 'system-ui', 'sans-serif'] },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'soft-lg': '0 8px 30px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-lacos-marinho min-h-screen flex items-center justify-center p-4">
+
+    <!-- Padrão decorativo no fundo -->
+    <div class="fixed inset-0 opacity-[0.06] pointer-events-none">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="setupBg" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="1.5" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#setupBg)"/>
+        </svg>
+    </div>
+
+    <div class="relative w-full max-w-2xl">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% extends 'setup/_base_setup.html' %}
+{% block title %}Setup{% endblock %}
+
+{% block content %}
+<div class="text-center mb-8">
+    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+         alt="Logo Laços"
+         class="h-16 w-auto mx-auto mb-4">
+</div>
+
+<div class="bg-white rounded-2xl shadow-soft-lg p-8 md:p-10">
+
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-amarelo-suave rounded-2xl mb-4">
+            <svg class="w-8 h-8 text-lacos-amarelo-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+            </svg>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">
+            Setup Inicial Necessário
+        </h1>
+        <p class="text-gray-600">
+            O sistema ainda não tem nenhum administrador cadastrado.
+        </p>
+    </div>
+
+    <div class="bg-lacos-amarelo-suave border border-lacos-amarelo/30 rounded-lg p-4 mb-6">
+        <h3 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+            <svg class="w-5 h-5 text-lacos-amarelo-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z"/>
+            </svg>
+            Atenção
+        </h3>
+        <p class="text-sm text-gray-700 leading-relaxed">
+            Esta página é exibida apenas porque o sistema ainda não tem usuários cadastrados. Após criar o primeiro administrador, esta página deixa de funcionar automaticamente.
+        </p>
+    </div>
+
+    <div class="text-center">
+        <a href="{{ url_for('setup.criar_admin') }}"
+           class="inline-flex items-center gap-2 bg-lacos-marinho text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-lacos-marinho-claro transition shadow-soft">
+            Criar Primeiro Administrador
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+            </svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

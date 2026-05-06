@@ -1,0 +1,118 @@
+{% extends 'setup/_base_setup.html' %}
+{% block title %}Criar Admin{% endblock %}
+
+{% block content %}
+<div class="text-center mb-8">
+    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+         alt="Logo Laços"
+         class="h-16 w-auto mx-auto mb-4">
+    <p class="text-white/80 text-sm font-medium">Setup Inicial</p>
+</div>
+
+<div class="bg-white rounded-2xl shadow-soft-lg p-8 md:p-10">
+
+    <h1 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-2">
+        Criar Primeiro Administrador
+    </h1>
+    <p class="text-gray-600 text-sm mb-6">
+        Esta é a única vez que você usará esta página. Após criar o primeiro admin, ela ficará desativada.
+    </p>
+
+    {# Mensagens flash #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-4 px-4 py-3 rounded-lg text-sm
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" novalidate>
+
+        {# Chave de setup #}
+        <div class="mb-5">
+            <label for="chave_setup" class="block text-sm font-bold text-gray-700 mb-2">
+                Chave de Setup
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            <input type="password" id="chave_setup" name="chave_setup"
+                   placeholder="Cole aqui a SETUP_SECRET_KEY"
+                   required
+                   autocomplete="off"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none font-mono">
+            <p class="mt-1 text-xs text-gray-500">
+                Esta chave foi configurada no Railway como variável de ambiente.
+            </p>
+        </div>
+
+        <div class="border-t border-gray-100 my-6"></div>
+
+        {# Nome #}
+        <div class="mb-5">
+            <label for="nome" class="block text-sm font-bold text-gray-700 mb-2">
+                Nome Completo
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            <input type="text" id="nome" name="nome"
+                   value="{{ nome or '' }}"
+                   placeholder="Ex: Patrícia Tusco"
+                   required minlength="3" maxlength="120"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none">
+        </div>
+
+        {# E-mail #}
+        <div class="mb-5">
+            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">
+                E-mail
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            <input type="email" id="email" name="email"
+                   value="{{ email or '' }}"
+                   placeholder="patricia@lacos.com.br"
+                   required maxlength="120"
+                   autocomplete="email"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none">
+        </div>
+
+        {# Senha #}
+        <div class="mb-5">
+            <label for="senha" class="block text-sm font-bold text-gray-700 mb-2">
+                Senha (mínimo 8 caracteres)
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            <input type="password" id="senha" name="senha"
+                   placeholder="Mínimo 8 caracteres"
+                   required minlength="8"
+                   autocomplete="new-password"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none">
+        </div>
+
+        {# Confirmar senha #}
+        <div class="mb-6">
+            <label for="senha_confirma" class="block text-sm font-bold text-gray-700 mb-2">
+                Confirmar Senha
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            <input type="password" id="senha_confirma" name="senha_confirma"
+                   placeholder="Digite a senha novamente"
+                   required minlength="8"
+                   autocomplete="new-password"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none">
+        </div>
+
+        <button type="submit"
+                class="w-full bg-lacos-marinho text-white py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer">
+            Criar Administrador
+        </button>
+    </form>
+</div>
+
+<p class="text-center text-white/60 text-xs mt-6">
+    Esta página é protegida por chave de setup e auto-desativação.
+</p>
+{% endblock %}

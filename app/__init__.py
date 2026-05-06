@@ -100,6 +100,9 @@ def _register_blueprints(app):
     from app.blueprints.admin import admin_bp
     app.register_blueprint(admin_bp)
 
+    from app.blueprints.setup import setup_bp
+    app.register_blueprint(setup_bp)
+
 
 def _register_error_handlers(app):
     """Registra handlers para erros HTTP."""
