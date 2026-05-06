@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ evento.titulo }} - Eventos - Associação Laços{% endblock %}
+
+{% block description %}{{ evento.descricao[:155] }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     BANNER COM DATA DESTACADA
+     ============================================ -->
+<section class="relative bg-lacos-marinho text-white overflow-hidden">
+
+    <!-- Padrão decorativo -->
+    <div class="absolute inset-0 opacity-[0.08]">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="eventoDetalheBannerDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="1.5" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#eventoDetalheBannerDots)"/>
+        </svg>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-6">
+            <ol class="flex flex-wrap items-center gap-2 text-sm text-white/80">
+                <li><a href="{{ url_for('public.home') }}" class="hover:text-white transition">Início</a></li>
+                <li>/</li>
+                <li><a href="{{ url_for('public.eventos_lista') }}" class="hover:text-white transition">Eventos</a></li>
+                <li>/</li>
+                <li class="text-white font-semibold line-clamp-1">{{ evento.titulo }}</li>
+            </ol>
+        </nav>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+
+            <!-- Data destacada (estilo "calendário") -->
+            <div class="md:col-span-3 lg:col-span-2">
+                <div class="bg-white/15 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20 shadow-soft-lg">
+                    <div class="text-sm font-bold uppercase opacity-80 mb-1">
+                        {{ evento.data_evento.strftime('%B') }}
+                    </div>
+                    <div class="text-5xl md:text-6xl font-extrabold leading-none my-2">
+                        {{ evento.data_evento.strftime('%d') }}
+                    </div>
+                    <div class="text-sm opacity-80 mb-3">
+                        {{ evento.data_evento.strftime('%Y') }}
+                    </div>
+                    <div class="pt-3 border-t border-white/20">
+                        <div class="text-xs uppercase opacity-80 font-bold">
+                            {{ evento.data_evento.strftime('%A') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Título e info principal -->
+            <div class="md:col-span-9 lg:col-span-10">
+
+                <!-- Status badge -->
+                <div class="mb-4">
+                    {% if evento.is_futuro %}
+                    <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/15 backdrop-blur-sm text-white text-sm font-bold rounded-full border border-white/20">
+                        <span class="w-2 h-2 bg-lacos-verde rounded-full animate-pulse"></span>
+                        Próximo evento
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/15 backdrop-blur-sm text-white text-sm font-bold rounded-full border border-white/20">
+                        Evento realizado
+                    </span>
+                    {% endif %}
+                </div>
+
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+                    {{ evento.titulo }}
+                </h1>
+
+                <!-- Metadados (horário e local) -->
+                <div class="flex flex-wrap items-center gap-6 text-base">
+                    {% if evento.horario %}
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        <span>{{ evento.horario.strftime('%H:%M') }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if evento.local %}
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                        </svg>
+                        <span>{{ evento.local }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     CONTEÚDO DO EVENTO
+     ============================================ -->
+<section class="py-12 md:py-20 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+            <!-- Descrição principal -->
+            <div class="lg:col-span-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Sobre este evento</h2>
+
+                <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
+                    {{ evento.descricao }}
+                </div>
+
+                <!-- Botão voltar -->
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <a href="{{ url_for('public.eventos_lista') }}"
+                       class="inline-flex items-center gap-2 text-lacos-marinho hover:text-lacos-marinho-claro font-bold group">
+                        <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+                        </svg>
+                        Voltar para a lista de eventos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar com outros eventos -->
+            <aside class="lg:col-span-4">
+                <div class="sticky top-24">
+
+                    <!-- Card de "informações rápidas" -->
+                    <div class="bg-gray-50 rounded-2xl p-6 mb-6 border border-gray-100">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Informações</h3>
+
+                        <div class="space-y-4">
+                            <!-- Data -->
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-lacos-marinho-suave rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-lacos-marinho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs uppercase font-bold text-gray-500 mb-0.5">Data</div>
+                                    <div class="font-semibold text-gray-800">
+                                        {{ evento.data_evento.strftime('%d/%m/%Y') }}
+                                    </div>
+                                    <div class="text-sm text-gray-600 capitalize">
+                                        {{ evento.data_evento.strftime('%A') }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if evento.horario %}
+                            <!-- Horário -->
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-lacos-azul-suave rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-lacos-azul" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs uppercase font-bold text-gray-500 mb-0.5">Horário</div>
+                                    <div class="font-semibold text-gray-800">
+                                        {{ evento.horario.strftime('%H:%M') }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if evento.local %}
+                            <!-- Local -->
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-lacos-vermelho-suave rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-lacos-vermelho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-xs uppercase font-bold text-gray-500 mb-0.5">Local</div>
+                                    <div class="font-semibold text-gray-800">
+                                        {{ evento.local }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Outros eventos -->
+                    {% if outros_eventos %}
+                    <div class="bg-white rounded-2xl border border-gray-100 p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">Próximos eventos</h3>
+                        <div class="space-y-3">
+                            {% for outro in outros_eventos %}
+                            <a href="{{ url_for('public.evento_detalhe', slug=outro.slug) }}"
+                               class="group flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition">
+                                <div class="flex-shrink-0 text-center w-12 px-2 py-1 bg-lacos-marinho-suave text-lacos-marinho rounded-lg">
+                                    <div class="text-xs font-bold uppercase">{{ outro.data_evento.strftime('%b') }}</div>
+                                    <div class="text-lg font-extrabold leading-none">{{ outro.data_evento.strftime('%d') }}</div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-semibold text-sm text-gray-800 group-hover:text-lacos-marinho transition line-clamp-2">
+                                        {{ outro.titulo }}
+                                    </div>
+                                    {% if outro.local %}
+                                    <div class="text-xs text-gray-500 mt-1 line-clamp-1">{{ outro.local }}</div>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-100">
+                            <a href="{{ url_for('public.eventos_lista') }}"
+                               class="text-sm text-lacos-marinho hover:text-lacos-marinho-claro font-semibold inline-flex items-center gap-1 group">
+                                Ver todos
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
