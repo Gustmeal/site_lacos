@@ -1,13 +1,13 @@
 """
 Rotas de autenticação do painel admin.
 
-Inclui login, logout e proteção contra brute force.
+Inclui login, logout e proteção contra brute force via rate limiting.
 """
 
 from datetime import datetime
+from urllib.parse import urlparse
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from urllib.parse import urlparse
 
 from app.blueprints.admin import admin_bp
 from app.forms import LoginForm
@@ -16,11 +16,11 @@ from app.extensions import db, limiter
 
 
 @admin_bp.route("/login", methods=["GET", "POST"])
-@limiter.limit("5 per minute", methods=["POST"])  # Proteção brute force
+@limiter.limit("5 per minute", methods=["POST"])
 def login():
-    """Página de login do admin."""
+    """Página de login do painel admin."""
 
-    # Se já estiver logado, redireciona para dashboard
+    # Se já estiver logado, redireciona direto para o dashboard
     if current_user.is_authenticated:
         return redirect(url_for("admin.dashboard"))
 

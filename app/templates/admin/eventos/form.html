@@ -1,0 +1,172 @@
+{% extends 'admin/_base_admin.html' %}
+
+{% block title %}{{ titulo_pagina }}{% endblock %}
+
+{% block body %}
+
+{# Header do Admin #}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+                         alt="Logo Laços"
+                         class="h-8 w-auto">
+                    <div class="hidden sm:block">
+                        <span class="text-sm font-bold text-lacos-marinho">Laços</span>
+                        <span class="block text-xs text-gray-500">Painel Admin</span>
+                    </div>
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="{{ url_for('public.home') }}" target="_blank"
+                   class="hidden sm:inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-lacos-marinho font-semibold transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                    </svg>
+                    Ver site
+                </a>
+                <a href="{{ url_for('admin.logout') }}"
+                   class="inline-flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/>
+                    </svg>
+                    <span class="hidden sm:inline">Sair</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+{# Conteúdo principal #}
+<main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+
+    {# Mensagens flash #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {# Breadcrumb #}
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho transition">Dashboard</a></li>
+            <li>/</li>
+            <li><a href="{{ url_for('admin.eventos_listar') }}" class="hover:text-lacos-marinho transition">Eventos</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">
+                {% if modo == 'criar' %}Novo{% else %}Editar{% endif %}
+            </li>
+        </ol>
+    </nav>
+
+    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-8">{{ titulo_pagina }}</h1>
+
+    {# Formulário #}
+    <form method="POST" novalidate class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-8">
+        {{ form.hidden_tag() }}
+
+        {# Título #}
+        <div class="mb-5">
+            <label for="titulo" class="block text-sm font-bold text-gray-700 mb-2">
+                {{ form.titulo.label.text }}
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            {{ form.titulo(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+            {% if form.titulo.errors %}
+                {% for error in form.titulo.errors %}
+                    <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {# Descrição #}
+        <div class="mb-5">
+            <label for="descricao" class="block text-sm font-bold text-gray-700 mb-2">
+                {{ form.descricao.label.text }}
+                <span class="text-lacos-vermelho">*</span>
+            </label>
+            {{ form.descricao(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-none") }}
+            {% if form.descricao.errors %}
+                {% for error in form.descricao.errors %}
+                    <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {# Data e Horário lado a lado #}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+            <div>
+                <label for="data_evento" class="block text-sm font-bold text-gray-700 mb-2">
+                    {{ form.data_evento.label.text }}
+                    <span class="text-lacos-vermelho">*</span>
+                </label>
+                {{ form.data_evento(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                {% if form.data_evento.errors %}
+                    {% for error in form.data_evento.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div>
+                <label for="horario" class="block text-sm font-bold text-gray-700 mb-2">
+                    {{ form.horario.label.text }}
+                </label>
+                {{ form.horario(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                {% if form.horario.errors %}
+                    {% for error in form.horario.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        {# Local #}
+        <div class="mb-5">
+            <label for="local" class="block text-sm font-bold text-gray-700 mb-2">
+                {{ form.local.label.text }}
+            </label>
+            {{ form.local(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+            {% if form.local.errors %}
+                {% for error in form.local.errors %}
+                    <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {# Publicado checkbox #}
+        <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <label for="publicado" class="flex items-start gap-3 cursor-pointer">
+                {{ form.publicado(class="w-5 h-5 mt-0.5 rounded border-gray-300 text-lacos-marinho focus:ring-lacos-marinho cursor-pointer") }}
+                <div>
+                    <span class="block font-bold text-gray-800">{{ form.publicado.label.text }}</span>
+                    <span class="block text-xs text-gray-600 mt-1">
+                        Quando ativado, o evento aparece na página pública. Quando desativado, fica salvo como rascunho.
+                    </span>
+                </div>
+            </label>
+        </div>
+
+        {# Botões #}
+        <div class="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-gray-100">
+            <a href="{{ url_for('admin.eventos_listar') }}"
+               class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition">
+                Cancelar
+            </a>
+            {{ form.submit(class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-lacos-marinho text-white rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer") }}
+        </div>
+    </form>
+
+</main>
+
+{% endblock %}
