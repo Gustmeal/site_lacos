@@ -90,6 +90,7 @@ def _initialize_extensions(app):
     # IMPORTANTE: Importa os modelos para que o Flask-Migrate os detecte.
     with app.app_context():
         from app.models import Usuario, Evento  # noqa: F401
+        db.create_all()
 
 
 def _register_blueprints(app):
