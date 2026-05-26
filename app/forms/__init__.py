@@ -2,5 +2,18 @@
 
 from app.forms.auth_forms import LoginForm
 from app.forms.evento_forms import EventoForm
+from app.forms.usuario_forms import (
+    CriarUsuarioForm,
+    EditarUsuarioForm,
+    ResetarSenhaForm,
+    AlterarMinhaSenhaForm,
+)
 
-__all__ = ["LoginForm"]
+__all__ = [
+    "LoginForm",
+    "EventoForm",
+    "CriarUsuarioForm",
+    "EditarUsuarioForm",
+    "ResetarSenhaForm",
+    "AlterarMinhaSenhaForm",
+]

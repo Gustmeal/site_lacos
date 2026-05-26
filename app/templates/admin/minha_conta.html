@@ -1,0 +1,148 @@
+{% extends 'admin/_base_admin.html' %}
+
+{% block title %}Minha Conta{% endblock %}
+
+{% block body %}
+
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+                         alt="Logo Laços"
+                         class="h-8 w-auto">
+                    <div class="hidden sm:block">
+                        <span class="text-sm font-bold text-lacos-marinho">Laços</span>
+                        <span class="block text-xs text-gray-500">Painel Admin</span>
+                    </div>
+                </a>
+            </div>
+            <a href="{{ url_for('admin.logout') }}"
+               class="inline-flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/>
+                </svg>
+                <span class="hidden sm:inline">Sair</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho transition">Dashboard</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Minha Conta</li>
+        </ol>
+    </nav>
+
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-6">Minha Conta</h1>
+
+    {# Card com informações da conta #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 mb-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Informações da conta</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <div class="text-xs uppercase font-bold text-gray-500 mb-1">Nome</div>
+                <div class="font-semibold text-gray-800">{{ current_user.nome }}</div>
+            </div>
+            <div>
+                <div class="text-xs uppercase font-bold text-gray-500 mb-1">E-mail</div>
+                <div class="font-semibold text-gray-800">{{ current_user.email }}</div>
+            </div>
+            <div>
+                <div class="text-xs uppercase font-bold text-gray-500 mb-1">Tipo</div>
+                <div>
+                    <span class="inline-flex items-center px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                        {{ current_user.role }}
+                    </span>
+                </div>
+            </div>
+            <div>
+                <div class="text-xs uppercase font-bold text-gray-500 mb-1">Último login</div>
+                <div class="font-semibold text-gray-800 text-sm">
+                    {% if current_user.ultimo_login %}
+                        {{ current_user.ultimo_login.strftime('%d/%m/%Y %H:%M') }}
+                    {% else %}
+                        Primeiro acesso
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <p class="text-xs text-gray-500 mt-4 pt-4 border-t border-gray-100">
+            Para alterar nome, e-mail ou outras informações, peça a outro administrador.
+        </p>
+    </div>
+
+    {# Card de alterar senha #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-1">Alterar senha</h2>
+        <p class="text-sm text-gray-600 mb-6">
+            Atualize sua senha de acesso regularmente para mais segurança.
+        </p>
+
+        <form method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div class="mb-5">
+                <label for="senha_atual" class="block text-sm font-bold text-gray-700 mb-2">
+                    {{ form.senha_atual.label.text }} <span class="text-lacos-vermelho">*</span>
+                </label>
+                {{ form.senha_atual(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                {% if form.senha_atual.errors %}
+                    {% for error in form.senha_atual.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="mb-5">
+                <label for="senha_nova" class="block text-sm font-bold text-gray-700 mb-2">
+                    {{ form.senha_nova.label.text }} <span class="text-lacos-vermelho">*</span>
+                </label>
+                {{ form.senha_nova(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                {% if form.senha_nova.errors %}
+                    {% for error in form.senha_nova.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="mb-6">
+                <label for="senha_confirma" class="block text-sm font-bold text-gray-700 mb-2">
+                    {{ form.senha_confirma.label.text }} <span class="text-lacos-vermelho">*</span>
+                </label>
+                {{ form.senha_confirma(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                {% if form.senha_confirma.errors %}
+                    {% for error in form.senha_confirma.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {{ form.submit(class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-lacos-marinho text-white rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer") }}
+        </form>
+    </div>
+
+</main>
+
+{% endblock %}

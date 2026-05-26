@@ -107,43 +107,47 @@
             </span>
         </a>
 
-        {# Card: Mensagens de contato (futuro) #}
-        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6">
+        {# Card: Usuários #}
+        <a href="{{ url_for('admin.usuarios_listar') }}"
+           class="block bg-white rounded-2xl shadow-soft hover:shadow-soft-lg border border-gray-100 p-6 transition group">
             <div class="flex items-start justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-vermelho-suave rounded-xl">
-                    <svg class="w-6 h-6 text-lacos-vermelho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-vermelho-suave rounded-xl group-hover:bg-lacos-vermelho group-hover:text-white transition">
+                    <svg class="w-6 h-6 text-lacos-vermelho group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/>
                     </svg>
                 </div>
-                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded">Em breve</span>
+                <span class="px-2 py-1 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded">Ativo</span>
             </div>
-            <h3 class="text-lg font-bold text-gray-800 mb-1">Mensagens</h3>
-            <p class="text-sm text-gray-600 mb-4">Visualize mensagens recebidas pelo formulário.</p>
-            <span class="inline-flex items-center gap-1 text-sm text-gray-400 font-semibold">
-                Disponível na Sprint 6
+            <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-lacos-marinho transition">Usuários</h3>
+            <p class="text-sm text-gray-600 mb-4">Gerencie as contas com acesso ao painel.</p>
+            <span class="inline-flex items-center gap-1 text-sm text-lacos-marinho font-semibold group-hover:gap-2 transition-all">
+                Acessar
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                </svg>
             </span>
-        </div>
+        </a>
 
-        {# Card: Conta #}
-        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6">
+        {# Card: Minha Conta #}
+        <a href="{{ url_for('admin.minha_conta') }}"
+           class="block bg-white rounded-2xl shadow-soft hover:shadow-soft-lg border border-gray-100 p-6 transition group">
             <div class="flex items-start justify-between mb-4">
-                <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-verde-suave rounded-xl">
-                    <svg class="w-6 h-6 text-lacos-verde-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-lacos-verde-suave rounded-xl group-hover:bg-lacos-verde group-hover:text-white transition">
+                    <svg class="w-6 h-6 text-lacos-verde-escuro group-hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
                     </svg>
                 </div>
                 <span class="px-2 py-1 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded">Ativo</span>
             </div>
-            <h3 class="text-lg font-bold text-gray-800 mb-1">Sua Conta</h3>
+            <h3 class="text-lg font-bold text-gray-800 mb-1 group-hover:text-lacos-marinho transition">Minha Conta</h3>
             <p class="text-sm text-gray-600 mb-4">{{ usuario.email }}</p>
-            <div class="text-xs text-gray-500">
-                {% if usuario.ultimo_login %}
-                    Último acesso: {{ usuario.ultimo_login.strftime('%d/%m/%Y %H:%M') }}
-                {% else %}
-                    Primeiro acesso
-                {% endif %}
-            </div>
-        </div>
+            <span class="inline-flex items-center gap-1 text-sm text-lacos-marinho font-semibold group-hover:gap-2 transition-all">
+                Alterar senha
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                </svg>
+            </span>
+        </a>
 
     </div>
 

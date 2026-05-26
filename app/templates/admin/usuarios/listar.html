@@ -1,0 +1,216 @@
+{% extends 'admin/_base_admin.html' %}
+
+{% block title %}Usuários{% endblock %}
+
+{% block body %}
+
+{# Header do Admin #}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+                         alt="Logo Laços"
+                         class="h-8 w-auto">
+                    <div class="hidden sm:block">
+                        <span class="text-sm font-bold text-lacos-marinho">Laços</span>
+                        <span class="block text-xs text-gray-500">Painel Admin</span>
+                    </div>
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="{{ url_for('public.home') }}" target="_blank"
+                   class="hidden sm:inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-lacos-marinho font-semibold transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                    </svg>
+                    Ver site
+                </a>
+                <a href="{{ url_for('admin.minha_conta') }}"
+                   class="hidden md:flex items-center gap-2 px-3 py-2 bg-lacos-marinho-suave hover:bg-lacos-marinho hover:text-white rounded-lg transition group">
+                    <div class="w-8 h-8 bg-lacos-marinho group-hover:bg-white rounded-full flex items-center justify-center text-white group-hover:text-lacos-marinho text-sm font-bold transition">
+                        {{ current_user.nome[0]|upper }}
+                    </div>
+                    <span class="text-sm font-semibold text-lacos-marinho group-hover:text-white transition">{{ current_user.nome.split()[0] }}</span>
+                </a>
+                <a href="{{ url_for('admin.logout') }}"
+                   class="inline-flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"/>
+                    </svg>
+                    <span class="hidden sm:inline">Sair</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+
+    {# Mensagens flash #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {# Breadcrumb #}
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho transition">Dashboard</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Usuários</li>
+        </ol>
+    </nav>
+
+    {# Cabeçalho com botão #}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Usuários</h1>
+            <p class="text-gray-600">
+                Gerencie as contas com acesso ao painel administrativo.
+            </p>
+        </div>
+        <a href="{{ url_for('admin.usuarios_criar') }}"
+           class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            Novo Usuário
+        </a>
+    </div>
+
+    {# Estatísticas #}
+    <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-marinho">{{ estatisticas.total }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase tracking-wide">Total</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-verde-escuro">{{ estatisticas.ativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase tracking-wide">Ativos</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-gray-400">{{ estatisticas.inativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase tracking-wide">Inativos</div>
+        </div>
+    </div>
+
+    {# Lista de usuários #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+        <div class="divide-y divide-gray-100">
+            {% for usuario in usuarios %}
+            <div class="p-5 hover:bg-gray-50 transition {% if not usuario.ativo %}opacity-60{% endif %}">
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+
+                    {# Avatar #}
+                    <div class="flex-shrink-0 w-12 h-12
+                        {% if usuario.ativo %}bg-lacos-marinho{% else %}bg-gray-400{% endif %}
+                        rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {{ usuario.nome[0]|upper }}
+                    </div>
+
+                    {# Conteúdo #}
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 class="text-lg font-bold text-gray-800">
+                                {{ usuario.nome }}
+                            </h3>
+                            {% if usuario.id == current_user.id %}
+                            <span class="inline-flex items-center px-2 py-0.5 bg-lacos-azul-suave text-lacos-azul-escuro text-xs font-bold rounded-full">
+                                Você
+                            </span>
+                            {% endif %}
+                            {% if usuario.ativo %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded-full">
+                                <span class="w-1.5 h-1.5 bg-lacos-verde rounded-full"></span>
+                                Ativo
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                                Inativo
+                            </span>
+                            {% endif %}
+                            <span class="inline-flex items-center px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                                {{ usuario.role }}
+                            </span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                            <span class="inline-flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+                                </svg>
+                                {{ usuario.email }}
+                            </span>
+                            {% if usuario.ultimo_login %}
+                            <span class="inline-flex items-center gap-1 text-xs">
+                                Último login: {{ usuario.ultimo_login.strftime('%d/%m/%Y %H:%M') }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {# Ações #}
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <a href="{{ url_for('admin.usuarios_editar', usuario_id=usuario.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-azul-suave text-lacos-azul-escuro rounded-lg hover:bg-lacos-azul hover:text-white font-semibold transition"
+                           title="Editar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
+                            </svg>
+                            <span class="hidden sm:inline">Editar</span>
+                        </a>
+
+                        {% if usuario.id != current_user.id %}
+                        <a href="{{ url_for('admin.usuarios_resetar_senha', usuario_id=usuario.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-amarelo-suave text-lacos-amarelo-escuro rounded-lg hover:bg-lacos-amarelo hover:text-white font-semibold transition"
+                           title="Resetar senha">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"/>
+                            </svg>
+                            <span class="hidden sm:inline">Senha</span>
+                        </a>
+
+                        <form method="POST" action="{{ url_for('admin.usuarios_toggle_ativo', usuario_id=usuario.id) }}"
+                              onsubmit="return confirm('{% if usuario.ativo %}Desativar{% else %}Ativar{% endif %} o usuário {{ usuario.nome|e }}?');"
+                              class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit"
+                                    class="inline-flex items-center gap-1 px-3 py-2 text-sm
+                                    {% if usuario.ativo %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro hover:bg-lacos-vermelho hover:text-white{% else %}bg-lacos-verde-suave text-lacos-verde-escuro hover:bg-lacos-verde hover:text-white{% endif %}
+                                    rounded-lg font-semibold transition"
+                                    title="{% if usuario.ativo %}Desativar{% else %}Ativar{% endif %}">
+                                {% if usuario.ativo %}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"/>
+                                </svg>
+                                <span class="hidden sm:inline">Desativar</span>
+                                {% else %}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                                <span class="hidden sm:inline">Ativar</span>
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
