@@ -1,0 +1,569 @@
+{% extends 'base.html' %}
+
+{% block title %}Clube {{ clube.nome }} - {{ clube.regiao }} | Laços{% endblock %}
+{% block description %}{{ clube.descricao_curta }}{% endblock %}
+
+{% block content %}
+
+<!-- ============================================
+     1. BANNER PRINCIPAL COM FOTO/LOGO DE CAPA
+     ============================================ -->
+<section class="relative bg-lacos-marinho text-white overflow-hidden">
+
+    {% if imagem_capa and imagem_capa.tipo == 'foto' %}
+    <!-- FOTO de fundo (clubes com fotos) -->
+    <div class="absolute inset-0">
+        <img src="{{ url_for('static', filename=imagem_capa.caminho) }}"
+             alt="Clube {{ clube.nome }}"
+             class="w-full h-full object-cover opacity-25">
+    </div>
+    {% endif %}
+
+    <!-- Padrão decorativo -->
+    <div class="absolute inset-0 bg-gradient-to-br from-lacos-marinho/95 via-lacos-marinho/85 to-lacos-marinho-claro/90"></div>
+    <div class="absolute inset-0 opacity-[0.08]">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="clubeBannerDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="1.5" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#clubeBannerDots)"/>
+        </svg>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-6">
+            <ol class="flex flex-wrap items-center gap-2 text-sm text-white/80">
+                <li><a href="{{ url_for('public.home') }}" class="hover:text-white transition">Início</a></li>
+                <li>/</li>
+                <li><a href="{{ url_for('public.clubes_lista') }}" class="hover:text-white transition">Clubes</a></li>
+                <li>/</li>
+                <li class="text-white font-semibold">{{ clube.nome }}</li>
+            </ol>
+        </nav>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+
+            <!-- Coluna esquerda: info do clube -->
+            <div class="md:col-span-8">
+
+                <!-- Badge categoria -->
+                <div class="mb-4">
+                    <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-sm text-white text-sm font-bold rounded-full border border-white/20">
+                        {% if clube.categoria == 'infantil' %}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
+                        </svg>
+                        {% else %}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                        </svg>
+                        {% endif %}
+                        Clube {{ clube.categoria_label }}
+                    </span>
+                </div>
+
+                <!-- Nome -->
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight">
+                    Clube {{ clube.nome }}
+                </h1>
+
+                <!-- Localização e info -->
+                <div class="flex flex-wrap items-center gap-6 text-lg mb-6">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                        </svg>
+                        <span>{{ clube.regiao_completa }}</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/>
+                        </svg>
+                        <span>{{ clube.idades }}</span>
+                    </div>
+
+                    {% if clube.total_associadas %}
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
+                        </svg>
+                        <span>{{ clube.total_associadas }} associadas</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- CTAs -->
+                <div class="flex flex-col sm:flex-row gap-3 mt-8">
+                    <a href="#sobre-clube"
+                       class="inline-flex items-center justify-center gap-2 bg-white text-lacos-marinho px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition shadow-soft">
+                        Conhecer o clube
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
+                        </svg>
+                    </a>
+
+                    <span class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white/70 px-6 py-3 rounded-lg font-bold border-2 border-white/20 cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+                        </svg>
+                        Inscrição
+                        <span class="px-2 py-0.5 bg-white/20 text-white text-xs font-bold rounded">Em breve</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Coluna direita: LOGO em destaque (quando não tem foto) -->
+            {% if imagem_capa and imagem_capa.tipo == 'logo' %}
+            <div class="md:col-span-4 flex justify-center md:justify-end">
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-white/20 shadow-soft-lg">
+                    <img src="{{ url_for('static', filename=imagem_capa.caminho) }}"
+                         alt="Logo Clube {{ clube.nome }}"
+                         class="w-40 h-40 md:w-48 md:h-48 object-contain">
+                </div>
+            </div>
+            {% elif imagem_capa and imagem_capa.tipo == 'foto' %}
+            <!-- Quando tem foto de fundo, mostramos o LOGO sobreposto (se existir) -->
+            {% set logo_path = 'img/clubes/' ~ clube.slug ~ '.png' %}
+            <div class="md:col-span-4 flex justify-center md:justify-end">
+                <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-soft-lg">
+                    <img src="{{ url_for('static', filename=logo_path) }}"
+                         alt="Logo Clube {{ clube.nome }}"
+                         onerror="this.style.display='none'"
+                         class="w-32 h-32 md:w-36 md:h-36 object-contain">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Onda decorativa na base -->
+    <div class="absolute bottom-0 left-0 right-0 leading-[0]">
+        <svg class="w-full h-12 md:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path fill="#FFFFFF" d="M0,50 C360,100 720,0 1440,50 L1440,100 L0,100 Z"/>
+        </svg>
+    </div>
+</section>
+
+<!-- ============================================
+     2. SOBRE O CLUBE
+     ============================================ -->
+<section id="sobre-clube" class="py-16 md:py-24 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+
+            <!-- Descrição -->
+            <div class="lg:col-span-7">
+                <span class="inline-block px-4 py-1.5 bg-lacos-marinho-suave text-lacos-marinho rounded-full text-sm font-bold mb-4">
+                    Sobre o clube
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-6 leading-tight">
+                    Conheça o {{ clube.nome }}
+                </h2>
+                <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                    <p>{{ clube.descricao }}</p>
+                </div>
+            </div>
+
+            <!-- Card de informações -->
+            <div class="lg:col-span-5">
+                <div class="bg-gradient-to-br from-lacos-marinho-suave to-white rounded-2xl border border-gray-100 p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Informações</h3>
+
+                    <dl class="space-y-4">
+                        <div>
+                            <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Categoria</dt>
+                            <dd class="font-semibold text-gray-800">{{ clube.categoria_label }}</dd>
+                        </div>
+
+                        <div>
+                            <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Localização</dt>
+                            <dd class="font-semibold text-gray-800">{{ clube.regiao_completa }}</dd>
+                        </div>
+
+                        <div>
+                            <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Faixa etária</dt>
+                            <dd class="font-semibold text-gray-800">{{ clube.idades }}</dd>
+                        </div>
+
+                        {% if clube.fundado_em %}
+                        <div>
+                            <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Fundado em</dt>
+                            <dd class="font-semibold text-gray-800">{{ clube.fundado_em }}</dd>
+                        </div>
+                        {% endif %}
+
+                        {% if clube.total_associadas %}
+                        <div>
+                            <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Associadas</dt>
+                            <dd class="font-semibold text-gray-800">{{ clube.total_associadas }}</dd>
+                        </div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================
+     3. EQUIPE DO CLUBE
+     ============================================ -->
+{% if clube.diretora or clube.vice_diretora or clube.secretaria or clube.monitora %}
+<section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="inline-block px-4 py-1.5 bg-lacos-vermelho-suave text-lacos-vermelho-escuro rounded-full text-sm font-bold mb-4">
+                Equipe
+            </span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
+                Nossa equipe
+            </h2>
+            <p class="text-lg text-gray-600">
+                Conheça quem cuida com carinho do dia a dia do clube.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+
+            {% if clube.diretora %}
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-marinho text-white rounded-full text-2xl font-extrabold mb-3">
+                    {{ clube.diretora[0]|upper }}
+                </div>
+                <div class="text-xs uppercase font-bold text-lacos-marinho mb-1">Diretora</div>
+                <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.diretora }}</div>
+            </div>
+            {% endif %}
+
+            {% if clube.vice_diretora %}
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-azul text-white rounded-full text-2xl font-extrabold mb-3">
+                    {{ clube.vice_diretora[0]|upper }}
+                </div>
+                <div class="text-xs uppercase font-bold text-lacos-azul mb-1">Vice-diretora</div>
+                <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.vice_diretora }}</div>
+            </div>
+            {% endif %}
+
+            {% if clube.secretaria %}
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-verde text-white rounded-full text-2xl font-extrabold mb-3">
+                    {{ clube.secretaria[0]|upper }}
+                </div>
+                <div class="text-xs uppercase font-bold text-lacos-verde-escuro mb-1">Secretaria</div>
+                <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.secretaria }}</div>
+            </div>
+            {% endif %}
+
+            {% if clube.monitora %}
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-vermelho text-white rounded-full text-2xl font-extrabold mb-3">
+                    {{ clube.monitora[0]|upper }}
+                </div>
+                <div class="text-xs uppercase font-bold text-lacos-vermelho-escuro mb-1">Monitora</div>
+                <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.monitora }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ============================================
+     4. TRABALHO DAS VIRTUDES (só clubes infantis)
+     ============================================ -->
+{% if clube.categoria == 'infantil' %}
+{% include 'components/clube_virtudes.html' %}
+{% endif %}
+
+<!-- ============================================
+     5. TEMAS SEMESTRAIS (só clubes infantis)
+     ============================================ -->
+{% if clube.categoria == 'infantil' %}
+{% include 'components/clube_temas.html' %}
+{% endif %}
+
+<!-- ============================================
+     6. GALERIA DE FOTOS
+     ============================================ -->
+{% if fotos_galeria %}
+<section class="py-16 md:py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="inline-block px-4 py-1.5 bg-lacos-verde-suave text-lacos-verde-escuro rounded-full text-sm font-bold mb-4">
+                Galeria
+            </span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
+                Momentos do clube
+            </h2>
+            <p class="text-lg text-gray-600">
+                Algumas imagens das nossas atividades e encontros.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4" id="galeria-clube">
+            {% for foto in fotos_galeria %}
+            <button type="button"
+                    onclick="abrirLightbox({{ loop.index0 }})"
+                    class="group aspect-square rounded-xl overflow-hidden bg-gray-100 hover:shadow-soft-lg transition-all cursor-pointer">
+                <img src="{{ url_for('static', filename=foto) }}"
+                     alt="Foto do Clube {{ clube.nome }} {{ loop.index }}"
+                     loading="lazy"
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox"
+     class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4"
+     onclick="if(event.target === this) fecharLightbox()">
+
+    <button onclick="fecharLightbox()"
+            class="absolute top-4 right-4 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    <button onclick="navegarFoto(-1)"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
+        </svg>
+    </button>
+
+    <button onclick="navegarFoto(1)"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition z-10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+        </svg>
+    </button>
+
+    <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain">
+
+    <div id="lightbox-contador" class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-sm text-white text-sm rounded-full"></div>
+</div>
+
+<script>
+    const fotosGaleria = [
+        {% for foto in fotos_galeria %}
+        "{{ url_for('static', filename=foto) }}",
+        {% endfor %}
+    ];
+    let fotoAtual = 0;
+
+    function abrirLightbox(index) {
+        fotoAtual = index;
+        atualizarLightbox();
+        document.getElementById('lightbox').classList.remove('hidden');
+        document.getElementById('lightbox').classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharLightbox() {
+        document.getElementById('lightbox').classList.add('hidden');
+        document.getElementById('lightbox').classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+
+    function navegarFoto(direcao) {
+        fotoAtual = (fotoAtual + direcao + fotosGaleria.length) % fotosGaleria.length;
+        atualizarLightbox();
+    }
+
+    function atualizarLightbox() {
+        document.getElementById('lightbox-img').src = fotosGaleria[fotoAtual];
+        document.getElementById('lightbox-contador').textContent = (fotoAtual + 1) + ' de ' + fotosGaleria.length;
+    }
+
+    // Atalhos de teclado
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('lightbox').classList.contains('hidden')) return;
+        if (e.key === 'Escape') fecharLightbox();
+        if (e.key === 'ArrowLeft') navegarFoto(-1);
+        if (e.key === 'ArrowRight') navegarFoto(1);
+    });
+</script>
+{% endif %}
+
+<!-- ============================================
+     7. FORMULÁRIO DE INTENÇÃO DE INSCRIÇÃO
+     ============================================ -->
+<section id="intencao" class="py-16 md:py-24 bg-lacos-marinho text-white relative overflow-hidden">
+
+    <div class="absolute inset-0 opacity-[0.06]">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="intencaoDots" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+                <circle cx="25" cy="25" r="2" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#intencaoDots)"/>
+        </svg>
+    </div>
+
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-10">
+            <span class="inline-block px-4 py-1.5 bg-white/15 backdrop-blur-sm text-white rounded-full text-sm font-bold mb-4 border border-white/20">
+                Demonstre interesse
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">
+                Quer conhecer melhor o Clube {{ clube.nome }}?
+            </h2>
+            <p class="text-lg opacity-90 max-w-xl mx-auto">
+                Preencha o formulário abaixo e nossa equipe entrará em contato para tirar dúvidas e dar mais informações.
+            </p>
+        </div>
+
+        <!-- Mensagens flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div id="intencao-enviada">
+                {% for category, message in messages %}
+                    <div class="mb-6 px-4 py-4 rounded-lg
+                        {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                        {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                        {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" novalidate class="bg-white rounded-2xl shadow-soft-lg p-6 md:p-8 text-gray-800">
+            {{ form.hidden_tag() }}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.nome_responsavel.label.text }} <span class="text-lacos-vermelho">*</span>
+                    </label>
+                    {{ form.nome_responsavel(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% for error in form.nome_responsavel.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.email.label.text }} <span class="text-lacos-vermelho">*</span>
+                    </label>
+                    {{ form.email(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% for error in form.email.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.telefone.label.text }} <span class="text-lacos-vermelho">*</span>
+                    </label>
+                    {{ form.telefone(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% for error in form.telefone.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.nome_candidata.label.text }} <span class="text-lacos-vermelho">*</span>
+                    </label>
+                    {{ form.nome_candidata(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% for error in form.nome_candidata.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.idade_candidata.label.text }}
+                    </label>
+                    {{ form.idade_candidata(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    {% for error in form.idade_candidata.errors %}
+                        <p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">
+                        {{ form.mensagem.label.text }}
+                    </label>
+                    {{ form.mensagem(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                </div>
+
+                <div class="md:col-span-2 pt-2">
+                    {{ form.submit(class="w-full inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-4 rounded-lg font-bold text-lg hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer") }}
+                    <p class="text-xs text-gray-500 mt-3 text-center">
+                        Ao enviar, você concorda com nossa Política de Privacidade.
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- ============================================
+     8. OUTROS CLUBES
+     ============================================ -->
+{% if outros_clubes %}
+<section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-3">
+                Conheça outros clubes {{ clube.categoria_label|lower }}s
+            </h2>
+            <p class="text-gray-600">
+                Veja outras opções da nossa associação na sua região.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {% for outro in outros_clubes %}
+            <a href="{{ url_for('public.clube_detalhe', slug=outro.slug) }}"
+               class="group block bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all overflow-hidden border border-gray-100">
+                <div class="p-6">
+                    <span class="inline-block px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded mb-3">
+                        {{ outro.categoria_label }}
+                    </span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-lacos-marinho transition">
+                        Clube {{ outro.nome }}
+                    </h3>
+                    <p class="text-sm text-gray-600 mb-4">{{ outro.regiao }}</p>
+                    <span class="inline-flex items-center gap-1 text-sm text-lacos-marinho font-bold group-hover:gap-2 transition-all">
+                        Conhecer
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="{{ url_for('public.clubes_lista') }}"
+               class="inline-flex items-center gap-2 text-lacos-marinho hover:text-lacos-marinho-claro font-bold group">
+                Ver todos os clubes
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

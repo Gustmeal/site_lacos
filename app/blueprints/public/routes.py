@@ -5,13 +5,21 @@ Todas as páginas acessíveis sem login ficam aqui.
 """
 
 from datetime import datetime
-from flask import render_template, abort
+from flask import render_template, abort, flash, redirect, url_for
 from app.blueprints.public import public_bp
 from app.data.clubes_data import (
     get_clubes_destaque,
     get_clubes_por_categoria,
     get_estatisticas,
+    get_clube_por_slug,
+    get_outros_clubes,
+    get_fotos_clube,
+    get_foto_capa,
+    get_imagem_capa,
 )
+from app.forms import IntencaoClubeForm
+from app.models.intencao import IntencaoClube
+from app.extensions import db
 from app.data.atividades_data import (
     get_todas_atividades,
     get_atividades_destaque,
@@ -139,4 +147,61 @@ def evento_detalhe(slug):
         "pages/evento_detalhe.html",
         evento=evento,
         outros_eventos=outros_eventos,
+    )
+
+
+@public_bp.route("/clubes/<slug>", methods=["GET", "POST"])
+def clube_detalhe(slug):
+    """Página individual de um clube."""
+
+    clube = get_clube_por_slug(slug)
+    if not clube:
+        abort(404)
+
+    # Carrega capa (foto OU logo) e galeria
+    imagem_capa = get_imagem_capa(slug)
+    fotos = get_fotos_clube(slug)
+    # Se a capa é uma foto, a galeria é o resto. Se é logo, mostra todas as fotos.
+    if imagem_capa and imagem_capa["tipo"] == "foto":
+        fotos_galeria = fotos[1:] if len(fotos) > 1 else []
+    else:
+        fotos_galeria = fotos  # Logo de capa, fotos são extras na galeria
+
+    # Outros clubes da mesma categoria
+    outros_clubes = get_outros_clubes(slug, mesma_categoria=True, quantidade=3)
+
+    # Formulário de intenção
+    form = IntencaoClubeForm()
+    form.clube_slug.data = clube["slug"]
+    form.clube_nome.data = clube["nome"]
+
+    if form.validate_on_submit():
+        intencao = IntencaoClube(
+            clube_slug=form.clube_slug.data,
+            clube_nome=form.clube_nome.data,
+            nome_responsavel=form.nome_responsavel.data.strip(),
+            email=form.email.data.lower().strip(),
+            telefone=form.telefone.data.strip(),
+            nome_candidata=form.nome_candidata.data.strip(),
+            idade_candidata=form.idade_candidata.data,
+            mensagem=form.mensagem.data.strip() if form.mensagem.data else None,
+        )
+
+        db.session.add(intencao)
+        db.session.commit()
+
+        flash(
+            f'Sua intenção de inscrição para o Clube {clube["nome"]} foi enviada com sucesso! '
+            f'A equipe da Laços entrará em contato em breve.',
+            "sucesso",
+        )
+        return redirect(url_for("public.clube_detalhe", slug=slug) + "#intencao-enviada")
+
+    return render_template(
+        "pages/clube_detalhe.html",
+        clube=clube,
+        imagem_capa=imagem_capa,
+        fotos_galeria=fotos_galeria,
+        outros_clubes=outros_clubes,
+        form=form,
     )

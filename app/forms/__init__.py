@@ -8,6 +8,7 @@ from app.forms.usuario_forms import (
     ResetarSenhaForm,
     AlterarMinhaSenhaForm,
 )
+from app.forms.intencao_forms import IntencaoClubeForm
 
 __all__ = [
     "LoginForm",
@@ -16,4 +17,5 @@ __all__ = [
     "EditarUsuarioForm",
     "ResetarSenhaForm",
     "AlterarMinhaSenhaForm",
+    "IntencaoClubeForm",
 ]

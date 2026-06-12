@@ -1,164 +1,420 @@
 """
-Dados dos clubes da Associação Laços.
+Dados dos 10 clubes da Associação Laços.
 
-Por enquanto está em formato estático (lista Python).
-Quando criarmos o modelo Clube no banco (Sprint 3), os dados
-migrarão para lá e este arquivo será removido.
-
-Dados extraídos do backlog oficial fornecido pela cliente.
+Cada clube tem informações institucionais, equipe, fotos e textos
+específicos. O conteúdo "Virtudes" e "Temas Semestrais" é genérico
+para clubes infantis (compartilhado em componente).
 """
 
-# Lista completa dos 10 clubes da Associação Laços
+import os
+from flask import current_app
+
+
 CLUBES = [
-    # ===== CLUBES INFANTIS (7) =====
+    # ===================== CLUBES INFANTIS (7) =====================
     {
         "slug": "caliandra",
         "nome": "Caliandra",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Lago Sul",
-        "logo": "img/clubes/caliandra.png",  # Ajustar se for .png
-        "descricao_breve": "Um espaço acolhedor para o desenvolvimento integral de crianças no Lago Sul.",
-        "ordem": 1,
+        "regiao_completa": "Lago Sul — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-vermelho",
+        "fundado_em": 2006,
+        "idades": "5 a 10 anos",
+        "total_associadas": 40,
+        "descricao_curta": "O primeiro clube de Brasília, hoje um dos maiores do Brasil.",
+        "descricao": (
+            "O Clube Caliandra, localizado no bairro Lago Sul, foi o primeiro de Brasília, "
+            "mas recebeu este nome em 2006. Tornou-se um dos maiores clube do Brasil, "
+            "com um total de 40 associadas, de 5 a 10 anos."
+        ),
+        "diretora": "Fernanda Godinho",
+        "vice_diretora": "Valessa Tokarski",
+        "secretaria": "Rosana Macedo",
+        "monitora": "Rafaela Teixeira",
+        "link_inscricao": "#",  # Vai virar admin de pais depois
+        "ativo": True,
     },
     {
         "slug": "camelia",
         "nome": "Camélia",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Lago Norte",
-        "logo": "img/clubes/camelia.png",
-        "descricao_breve": "Formação, comunidade e crescimento para crianças do Lago Norte.",
-        "ordem": 2,
+        "regiao_completa": "Lago Norte — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-azul",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube infantil do Lago Norte com atividades formativas e culturais.",
+        "descricao": (
+            "O Clube Camélia, localizado no Lago Norte, oferece atividades formativas para "
+            "meninas de 5 a 10 anos, com foco na vivência das virtudes e desenvolvimento integral."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "flor-de-lis",
         "nome": "Flor de Lis",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Guará",
-        "logo": "img/clubes/flor-de-lis.png",
-        "descricao_breve": "Atividades formativas e recreativas para crianças no Guará.",
-        "ordem": 3,
+        "regiao_completa": "Guará — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-verde",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube do Guará com atividades dinâmicas e formação de virtudes.",
+        "descricao": (
+            "O Clube Flor de Lis, localizado no Guará, acolhe meninas de 5 a 10 anos em um "
+            "ambiente de formação humana e cristã, com atividades variadas e dinâmicas."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "girassol",
         "nome": "Girassol",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Grande Colorado",
-        "logo": "img/clubes/girassol.png",
-        "descricao_breve": "Espaço de aprendizado e amizade no Grande Colorado.",
-        "ordem": 4,
+        "regiao_completa": "Grande Colorado — Sobradinho/DF",
+        "destaque": False,
+        "cor_tema": "lacos-amarelo",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube do Grande Colorado com proposta vibrante e acolhedora.",
+        "descricao": (
+            "O Clube Girassol, localizado no Grande Colorado, oferece formação para meninas "
+            "de 5 a 10 anos em um ambiente alegre e acolhedor."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "ipe-rosa",
         "nome": "Ipê Rosa",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Águas Claras",
-        "logo": "img/clubes/ipe-rosa.png",
-        "descricao_breve": "Construindo laços de comunidade em Águas Claras.",
-        "ordem": 5,
+        "regiao_completa": "Águas Claras — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-vermelho",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube de Águas Claras com forte ênfase em virtudes e amizades.",
+        "descricao": (
+            "O Clube Ipê Rosa, localizado em Águas Claras, é um espaço de formação e amizade "
+            "para meninas de 5 a 10 anos, com atividades semanais ricas e variadas."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "jacaranda",
         "nome": "Jacarandá",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Taguatinga",
-        "logo": "img/clubes/jacaranda.png",
-        "descricao_breve": "Formação humana e cristã para crianças de Taguatinga.",
-        "ordem": 6,
+        "regiao_completa": "Taguatinga — Brasília/DF",
+        "destaque": False,
+        "cor_tema": "lacos-azul",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube de Taguatinga, ambiente acolhedor para crescer com alegria.",
+        "descricao": (
+            "O Clube Jacarandá, localizado em Taguatinga, oferece atividades formativas para "
+            "meninas de 5 a 10 anos, em um ambiente que combina alegria e formação."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "margarida",
         "nome": "Margarida",
         "categoria": "infantil",
+        "categoria_label": "Infantil",
         "regiao": "Lago Sul",
-        "logo": "img/clubes/margarida.png",
-        "descricao_breve": "Atividades enriquecedoras para crianças no Lago Sul.",
-        "ordem": 7,
+        "regiao_completa": "Lago Sul — Brasília/DF",
+        "destaque": False,
+        "cor_tema": "lacos-verde",
+        "fundado_em": None,
+        "idades": "5 a 10 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube do Lago Sul, espaço seguro para meninas crescerem.",
+        "descricao": (
+            "O Clube Margarida, localizado no Lago Sul, é um espaço seguro e formativo para "
+            "meninas de 5 a 10 anos, com atividades semanais."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
-    # ===== CLUBES JUVENIS (3) =====
+
+    # ===================== CLUBES JUVENIS (3) =====================
     {
         "slug": "andorinha",
         "nome": "Andorinha",
         "categoria": "juvenil",
+        "categoria_label": "Juvenil",
         "regiao": "Asa Sul",
-        "logo": "img/clubes/andorinha.png",
-        "descricao_breve": "Espaço de formação para jovens na Asa Sul.",
-        "ordem": 8,
+        "regiao_completa": "Asa Sul — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-marinho",
+        "fundado_em": None,
+        "idades": "11 a 17 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube juvenil da Asa Sul, formação aprofundada para jovens.",
+        "descricao": (
+            "O Clube Andorinha, localizado na Asa Sul, oferece formação aprofundada para "
+            "jovens de 11 a 17 anos, com atividades adaptadas à fase da adolescência."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "magnolia",
         "nome": "Magnólia",
         "categoria": "juvenil",
+        "categoria_label": "Juvenil",
         "regiao": "Park Way",
-        "logo": "img/clubes/magnolia.png",
-        "descricao_breve": "Comunidade jovem com formação integral no Park Way.",
-        "ordem": 9,
+        "regiao_completa": "Park Way — Brasília/DF",
+        "destaque": False,
+        "cor_tema": "lacos-marinho",
+        "fundado_em": None,
+        "idades": "11 a 17 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube juvenil do Park Way, jovens em formação e amizade.",
+        "descricao": (
+            "O Clube Magnólia, localizado no Park Way, é um espaço de formação para jovens "
+            "de 11 a 17 anos, com foco em amizade e crescimento integral."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
     {
         "slug": "orquidea",
         "nome": "Orquídea",
         "categoria": "juvenil",
+        "categoria_label": "Juvenil",
         "regiao": "Lago Sul",
-        "logo": "img/clubes/orquidea.png",
-        "descricao_breve": "Crescimento e formação para jovens no Lago Sul.",
-        "ordem": 10,
+        "regiao_completa": "Lago Sul — Brasília/DF",
+        "destaque": True,
+        "cor_tema": "lacos-marinho",
+        "fundado_em": None,
+        "idades": "11 a 17 anos",
+        "total_associadas": None,
+        "descricao_curta": "Clube juvenil do Lago Sul, atividades para jovens em formação.",
+        "descricao": (
+            "O Clube Orquídea, localizado no Lago Sul, atende jovens de 11 a 17 anos em "
+            "um ambiente formativo e desafiador."
+        ),
+        "diretora": None,
+        "vice_diretora": None,
+        "secretaria": None,
+        "monitora": None,
+        "link_inscricao": "#",
+        "ativo": True,
     },
 ]
 
 
+# ====================== FUNÇÕES AUXILIARES ======================
+
+def get_todos_clubes():
+    """Retorna todos os clubes ativos."""
+    return [c for c in CLUBES if c.get("ativo", True)]
+
+
 def get_clubes_destaque(quantidade=6):
-    """
-    Retorna clubes em destaque para a home (limitado).
-
-    Args:
-        quantidade: Número de clubes a retornar (padrão 6).
-
-    Returns:
-        Lista com os primeiros N clubes ordenados.
-    """
-    return sorted(CLUBES, key=lambda c: c["ordem"])[:quantidade]
+    """Retorna clubes marcados como destaque."""
+    destaques = [c for c in get_todos_clubes() if c.get("destaque")]
+    return destaques[:quantidade]
 
 
-def get_clubes_por_categoria(categoria=None):
-    """
-    Retorna clubes filtrados por categoria.
-
-    Args:
-        categoria: 'infantil', 'juvenil' ou None (retorna todos).
-
-    Returns:
-        Lista de clubes da categoria especificada.
-    """
-    if categoria is None:
-        return sorted(CLUBES, key=lambda c: c["ordem"])
-    return [c for c in CLUBES if c["categoria"] == categoria]
+def get_clubes_por_categoria(categoria):
+    """Retorna clubes filtrados por categoria (infantil ou juvenil)."""
+    return [c for c in get_todos_clubes() if c["categoria"] == categoria]
 
 
 def get_clube_por_slug(slug):
-    """
-    Busca um clube pelo seu slug (URL amigável).
-
-    Args:
-        slug: Identificador único do clube (ex: 'caliandra').
-
-    Returns:
-        Dict do clube ou None se não encontrado.
-    """
+    """Retorna um clube específico pelo slug, ou None se não encontrar."""
     for clube in CLUBES:
         if clube["slug"] == slug:
             return clube
     return None
 
 
-def get_estatisticas():
-    """
-    Retorna estatísticas gerais dos clubes.
+def get_outros_clubes(slug_atual, mesma_categoria=True, quantidade=3):
+    """Retorna outros clubes (exceto o atual)."""
+    clube_atual = get_clube_por_slug(slug_atual)
+    if not clube_atual:
+        return []
 
-    Returns:
-        Dict com totais por categoria.
-    """
+    outros = [c for c in get_todos_clubes() if c["slug"] != slug_atual]
+
+    if mesma_categoria:
+        outros = [c for c in outros if c["categoria"] == clube_atual["categoria"]]
+
+    return outros[:quantidade]
+
+
+def get_estatisticas():
+    """Retorna estatísticas gerais dos clubes."""
+    todos = get_todos_clubes()
     return {
-        "total": len(CLUBES),
-        "infantis": len([c for c in CLUBES if c["categoria"] == "infantil"]),
-        "juvenis": len([c for c in CLUBES if c["categoria"] == "juvenil"]),
-        "regioes": len(set(c["regiao"] for c in CLUBES)),
+        "total_clubes": len(todos),
+        "total_infantis": len(get_clubes_por_categoria("infantil")),
+        "total_juvenis": len(get_clubes_por_categoria("juvenil")),
+        "total_regioes": len(set(c["regiao"] for c in todos)),
     }
+
+
+def get_fotos_clube(slug):
+    """
+    Detecta automaticamente as fotos de um clube na pasta correspondente.
+    Retorna lista de caminhos relativos (a partir de static/img/clubes/<slug>/).
+
+    Procura por: 01.jpg, 01.png, 02.jpg, 02.png... até encontrar
+    o último arquivo numerado.
+    """
+    try:
+        pasta_clube = os.path.join(
+            current_app.static_folder,
+            "img",
+            "clubes",
+            slug,
+        )
+
+        if not os.path.isdir(pasta_clube):
+            return []
+
+        fotos = []
+        for arquivo in sorted(os.listdir(pasta_clube)):
+            # Aceita .jpg, .jpeg, .png, .webp (minúsculo)
+            extensoes_validas = (".jpg", ".jpeg", ".png", ".webp")
+            if arquivo.lower().endswith(extensoes_validas):
+                # Ignora arquivos que começam com ponto (.DS_Store etc)
+                if not arquivo.startswith("."):
+                    fotos.append(f"img/clubes/{slug}/{arquivo}")
+
+        return fotos
+
+    except Exception:
+        return []
+
+
+def get_logo_clube(slug):
+    """
+    Retorna o caminho do logo PNG do clube, se existir.
+    Estrutura: app/static/img/clubes/<slug>.png
+    """
+    try:
+        caminho_arquivo = os.path.join(
+            current_app.static_folder,
+            "img",
+            "clubes",
+            f"{slug}.png",
+        )
+
+        if os.path.isfile(caminho_arquivo):
+            return f"img/clubes/{slug}.png"
+
+        return None
+    except Exception:
+        return None
+
+
+def get_fotos_clube(slug):
+    """
+    Detecta automaticamente as fotos de um clube na subpasta correspondente.
+    Estrutura: app/static/img/clubes/<slug>/01.jpg, 02.jpg...
+
+    Retorna lista de caminhos relativos. Lista vazia se não houver subpasta.
+    """
+    try:
+        pasta_clube = os.path.join(
+            current_app.static_folder,
+            "img",
+            "clubes",
+            slug,
+        )
+
+        if not os.path.isdir(pasta_clube):
+            return []
+
+        fotos = []
+        extensoes_validas = (".jpg", ".jpeg", ".png", ".webp")
+
+        for arquivo in sorted(os.listdir(pasta_clube)):
+            if arquivo.lower().endswith(extensoes_validas):
+                if not arquivo.startswith("."):
+                    fotos.append(f"img/clubes/{slug}/{arquivo}")
+
+        return fotos
+
+    except Exception:
+        return []
+
+
+def get_imagem_capa(slug):
+    """
+    Retorna a imagem de capa do clube com prioridade:
+    1º) Primeira foto da subpasta (01.jpg)
+    2º) Logo PNG (<slug>.png)
+    3º) None (mostra fallback estilizado)
+    """
+    fotos = get_fotos_clube(slug)
+    if fotos:
+        return {"tipo": "foto", "caminho": fotos[0]}
+
+    logo = get_logo_clube(slug)
+    if logo:
+        return {"tipo": "logo", "caminho": logo}
+
+    return None
+
+
+def get_foto_capa(slug):
+    """[DEPRECATED - mantida por compatibilidade] Use get_imagem_capa."""
+    capa = get_imagem_capa(slug)
+    return capa["caminho"] if capa else None
