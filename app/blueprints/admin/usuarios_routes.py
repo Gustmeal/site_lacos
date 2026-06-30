@@ -19,7 +19,7 @@ from app.forms import (
 )
 from app.models.usuario import Usuario
 from app.extensions import db
-
+from app.utils.decorators import admin_geral_required
 
 def _contar_admins_ativos():
     """Conta quantos admins ativos existem no sistema."""
@@ -35,6 +35,7 @@ def _eh_ultimo_admin_ativo(usuario):
 
 @admin_bp.route("/usuarios")
 @login_required
+@admin_geral_required
 def usuarios_listar():
     """Lista todos os usuários administrativos."""
 
@@ -60,6 +61,7 @@ def usuarios_listar():
 
 @admin_bp.route("/usuarios/novo", methods=["GET", "POST"])
 @login_required
+@admin_geral_required
 def usuarios_criar():
     """Cria um novo usuário admin."""
 
@@ -104,6 +106,7 @@ def usuarios_criar():
 
 @admin_bp.route("/usuarios/<int:usuario_id>/editar", methods=["GET", "POST"])
 @login_required
+@admin_geral_required
 def usuarios_editar(usuario_id):
     """Edita um usuário existente (exceto senha)."""
 
@@ -178,6 +181,7 @@ def usuarios_editar(usuario_id):
 
 @admin_bp.route("/usuarios/<int:usuario_id>/resetar-senha", methods=["GET", "POST"])
 @login_required
+@admin_geral_required
 def usuarios_resetar_senha(usuario_id):
     """Reseta a senha de outro usuário."""
 
@@ -210,6 +214,7 @@ def usuarios_resetar_senha(usuario_id):
 
 @admin_bp.route("/usuarios/<int:usuario_id>/toggle-ativo", methods=["POST"])
 @login_required
+@admin_geral_required
 def usuarios_toggle_ativo(usuario_id):
     """Ativa ou desativa um usuário."""
 
@@ -235,6 +240,7 @@ def usuarios_toggle_ativo(usuario_id):
 
 @admin_bp.route("/minha-conta", methods=["GET", "POST"])
 @login_required
+@admin_geral_required
 def minha_conta():
     """Página para o usuário gerenciar a própria conta."""
 

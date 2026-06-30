@@ -1,0 +1,65 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Resetar Senha - {{ admin.nome }}{% endblock %}
+
+{% block body %}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3">
+                <img src="{{ url_for('static', filename='img/logo-lacos.png') }}" alt="Logo" class="h-8 w-auto">
+                <span class="hidden sm:block text-sm font-bold text-lacos-marinho">Laços Admin</span>
+            </a>
+            <a href="{{ url_for('admin.logout') }}" class="text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">Sair</a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li><a href="{{ url_for('admin.admin_clubes_listar') }}" class="hover:text-lacos-marinho">Admins de Clube</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Resetar Senha</li>
+        </ol>
+    </nav>
+
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-2">Resetar Senha</h1>
+    <p class="text-gray-600 mb-6">Definir nova senha para <strong>{{ admin.nome }}</strong> ({{ admin.email }}).</p>
+
+    <div class="bg-lacos-amarelo-suave border border-lacos-amarelo/30 rounded-lg p-4 mb-6">
+        <p class="text-sm text-gray-700">
+            <strong>Atenção:</strong> a senha atual será substituída. Comunique a nova senha às pessoas que usam essa conta por canal seguro.
+        </p>
+    </div>
+
+    <form method="POST" novalidate class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-8">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-5">
+            <label class="block text-sm font-bold text-gray-700 mb-2">
+                {{ form.senha.label.text }} <span class="text-lacos-vermelho">*</span>
+            </label>
+            {{ form.senha(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+            {% for error in form.senha.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-sm font-bold text-gray-700 mb-2">
+                {{ form.senha_confirma.label.text }} <span class="text-lacos-vermelho">*</span>
+            </label>
+            {{ form.senha_confirma(class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+            {% for error in form.senha_confirma.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div class="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-gray-100">
+            <a href="{{ url_for('admin.admin_clubes_listar') }}"
+               class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition">
+                Cancelar
+            </a>
+            {{ form.submit(class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-lacos-amarelo-escuro text-white rounded-lg font-bold hover:bg-lacos-amarelo transition shadow-soft cursor-pointer") }}
+        </div>
+    </form>
+</main>
+{% endblock %}

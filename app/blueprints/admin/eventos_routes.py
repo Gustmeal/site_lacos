@@ -72,6 +72,9 @@ def eventos_criar():
         )
         novo_evento.gerar_slug()
 
+        # Marca o autor do evento (importante para Sprint M)
+        novo_evento.autor_id = current_user.id
+
         db.session.add(novo_evento)
         db.session.commit()
 
@@ -92,6 +95,13 @@ def eventos_editar(evento_id):
     """Edita um evento existente."""
 
     evento = Evento.query.get_or_404(evento_id)
+
+    # Proteção: admin_clube só edita eventos que ele criou
+    if current_user.is_admin_clube():
+        if evento.autor_id != current_user.id:
+            flash("Você só pode editar eventos que você mesmo criou.", "erro")
+            return redirect(url_for("admin.eventos_listar"))
+
     form = EventoForm(obj=evento)
 
     if form.validate_on_submit():
@@ -130,6 +140,12 @@ def eventos_excluir(evento_id):
     evento = Evento.query.get_or_404(evento_id)
     titulo = evento.titulo
 
+    # Proteção: admin_clube só exclui eventos que ele criou
+    if current_user.is_admin_clube():
+        if evento.autor_id != current_user.id:
+            flash("Você só pode excluir eventos que você mesmo criou.", "erro")
+            return redirect(url_for("admin.eventos_listar"))
+
     db.session.delete(evento)
     db.session.commit()
 
@@ -143,6 +159,13 @@ def eventos_toggle_publicado(evento_id):
     """Alterna o status de publicação do evento."""
 
     evento = Evento.query.get_or_404(evento_id)
+
+    # Proteção: admin_clube só altera publicação de eventos que ele criou
+    if current_user.is_admin_clube():
+        if evento.autor_id != current_user.id:
+            flash("Você só pode alterar eventos que você mesmo criou.", "erro")
+            return redirect(url_for("admin.eventos_listar"))
+
     evento.publicado = not evento.publicado
 
     db.session.commit()

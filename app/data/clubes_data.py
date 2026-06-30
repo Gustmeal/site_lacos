@@ -24,6 +24,7 @@ CLUBES = [
         "fundado_em": 2006,
         "idades": "5 a 10 anos",
         "total_associadas": 40,
+        "funcionamento": None,
         "descricao_curta": "O primeiro clube de Brasília, hoje um dos maiores do Brasil.",
         "descricao": (
             "O Clube Caliandra, localizado no bairro Lago Sul, foi o primeiro de Brasília, "
@@ -34,7 +35,20 @@ CLUBES = [
         "vice_diretora": "Valessa Tokarski",
         "secretaria": "Rosana Macedo",
         "monitora": "Rafaela Teixeira",
-        "link_inscricao": "#",  # Vai virar admin de pais depois
+        "atividades_oferecidas": [
+            "Clube de leitura",
+            "Aula de doutrina",
+            "Oficinas de culinária",
+            "Bordado",
+            "Jardinagem",
+            "Música",
+            "Artesanato",
+            "Moda e comportamento",
+            "Contação de história",
+            "Formação das virtudes",
+            "Formação para os pais",
+        ],
+        "link_inscricao": "#",
         "ativo": True,
     },
     {
@@ -48,16 +62,31 @@ CLUBES = [
         "cor_tema": "lacos-azul",
         "fundado_em": None,
         "idades": "5 a 10 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube infantil do Lago Norte com atividades formativas e culturais.",
+        "total_associadas": 30,
+        "funcionamento": "Sábado, das 9h às 12h",
+        "descricao_curta": "Clube familiar do Lago Norte com forte ênfase na formação integral.",
         "descricao": (
-            "O Clube Camélia, localizado no Lago Norte, oferece atividades formativas para "
-            "meninas de 5 a 10 anos, com foco na vivência das virtudes e desenvolvimento integral."
+            "O Clube Familiar Camélia, localizado no Lago Norte, é um espaço de formação "
+            "para meninas de 5 a 10 anos. Conta com 30 associadas e oferece atividades "
+            "que abrangem desde aulas práticas até momentos de formação para os pais."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Priscila Paço",
+        "vice_diretora": "Maria Donária Soares",
+        "secretaria": "Luciana Vieira",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Clube de leitura",
+            "Aula de doutrina",
+            "Oficinas de culinária",
+            "Bordado",
+            "Jardinagem",
+            "Música",
+            "Artesanato",
+            "Moda e comportamento",
+            "Contação de história",
+            "Formação das virtudes",
+            "Formação para os pais",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -67,21 +96,38 @@ CLUBES = [
         "categoria": "infantil",
         "categoria_label": "Infantil",
         "regiao": "Guará",
-        "regiao_completa": "Guará — Brasília/DF",
+        "regiao_completa": "Guará II — Brasília/DF",
         "destaque": True,
         "cor_tema": "lacos-verde",
         "fundado_em": None,
         "idades": "5 a 10 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube do Guará com atividades dinâmicas e formação de virtudes.",
+        "total_associadas": 25,
+        "funcionamento": "Sábado, das 9h30 às 11h30",
+        "descricao_curta": "Clube familiar do Guará II com casa prática e formação integral.",
         "descricao": (
-            "O Clube Flor de Lis, localizado no Guará, acolhe meninas de 5 a 10 anos em um "
-            "ambiente de formação humana e cristã, com atividades variadas e dinâmicas."
+            "O Clube Familiar Flor de Lis, localizado no Guará II, acolhe 25 associadas "
+            "em um ambiente de formação humana e cristã. Oferece atividades variadas com "
+            "destaque para a 'casa prática' — oficinas voltadas ao cuidado com o lar e "
+            "formação integral das meninas."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Ana Flávia Ferreira Santiago",
+        "vice_diretora": "Marina Carvalho de Moura",
+        "secretaria": "Livia Tamiris Vasconcelos",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Casa prática",
+            "Oficinas de cuidado com o lar",
+            "Culinária",
+            "Bordado",
+            "Jardinagem",
+            "Música",
+            "Desenho e pintura",
+            "Artesanato",
+            "Moda e comportamento",
+            "Esporte",
+            "Formação das virtudes",
+            "Formação para os pais",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -97,6 +143,7 @@ CLUBES = [
         "fundado_em": None,
         "idades": "5 a 10 anos",
         "total_associadas": None,
+        "funcionamento": None,
         "descricao_curta": "Clube do Grande Colorado com proposta vibrante e acolhedora.",
         "descricao": (
             "O Clube Girassol, localizado no Grande Colorado, oferece formação para meninas "
@@ -106,6 +153,7 @@ CLUBES = [
         "vice_diretora": None,
         "secretaria": None,
         "monitora": None,
+        "atividades_oferecidas": [],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -114,22 +162,33 @@ CLUBES = [
         "nome": "Ipê Rosa",
         "categoria": "infantil",
         "categoria_label": "Infantil",
-        "regiao": "Águas Claras",
-        "regiao_completa": "Águas Claras — Brasília/DF",
+        "regiao": "Águas Claras / Park Way",
+        "regiao_completa": "Águas Claras / Park Way — Brasília/DF",
         "destaque": True,
         "cor_tema": "lacos-vermelho",
         "fundado_em": None,
         "idades": "5 a 10 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube de Águas Claras com forte ênfase em virtudes e amizades.",
+        "total_associadas": 20,
+        "funcionamento": "Sábados, das 9h30 às 11h15",
+        "descricao_curta": "Clube de Águas Claras e Park Way com atividades práticas e formativas.",
         "descricao": (
-            "O Clube Ipê Rosa, localizado em Águas Claras, é um espaço de formação e amizade "
-            "para meninas de 5 a 10 anos, com atividades semanais ricas e variadas."
+            "O Clube Ipê Rosa atende meninas de 5 a 10 anos em Águas Claras e Park Way, "
+            "com 20 associadas. As atividades combinam formação espiritual, "
+            "habilidades práticas e momentos de cultura e amizade."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Gabriela Sarkis Teixeira Ribeiro de Andrade",
+        "vice_diretora": "Larissa Carvalho Bittencourt Diniz",
+        "secretaria": "Alessandra Dionis Rios",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Contação de história",
+            "Clube do Livro",
+            "Culinária",
+            "Artesanato",
+            "Aulas práticas de beleza",
+            "Organização da casa",
+            "Organização dos estudos",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -139,21 +198,35 @@ CLUBES = [
         "categoria": "infantil",
         "categoria_label": "Infantil",
         "regiao": "Taguatinga",
-        "regiao_completa": "Taguatinga — Brasília/DF",
+        "regiao_completa": "Taguatinga Norte — Brasília/DF",
         "destaque": False,
         "cor_tema": "lacos-azul",
         "fundado_em": None,
         "idades": "5 a 10 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube de Taguatinga, ambiente acolhedor para crescer com alegria.",
+        "total_associadas": 15,
+        "funcionamento": "Quinzenalmente aos sábados, das 9h às 12h",
+        "descricao_curta": "Clube de Taguatinga Norte com formação cultural e espiritual.",
         "descricao": (
-            "O Clube Jacarandá, localizado em Taguatinga, oferece atividades formativas para "
-            "meninas de 5 a 10 anos, em um ambiente que combina alegria e formação."
+            "O Clube Jacarandá, localizado em Taguatinga Norte, conta com 15 associadas "
+            "e oferece um leque completo de atividades culturais, práticas e formativas, "
+            "incluindo aulas de doutrina católica e formação das virtudes."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Priscilla Machado",
+        "vice_diretora": "Letícia Bonifácio",
+        "secretaria": "Niágara Bomtempo",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Artesanato",
+            "Artes",
+            "Culinária",
+            "Música",
+            "Moda",
+            "Etiqueta",
+            "Personal organizer",
+            "Clube do livro",
+            "Contação de histórias (virtudes)",
+            "Aula de doutrina católica",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -168,16 +241,34 @@ CLUBES = [
         "cor_tema": "lacos-verde",
         "fundado_em": None,
         "idades": "5 a 10 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube do Lago Sul, espaço seguro para meninas crescerem.",
+        "total_associadas": 23,
+        "funcionamento": "Sábado, das 10h às 12h",
+        "descricao_curta": "Clube familiar do Lago Sul com formação integral e casa prática.",
         "descricao": (
-            "O Clube Margarida, localizado no Lago Sul, é um espaço seguro e formativo para "
-            "meninas de 5 a 10 anos, com atividades semanais."
+            "O Clube Familiar Margarida, localizado no Lago Sul, atende 23 associadas em "
+            "atividades que combinam aulas de doutrina, casa prática, oficinas variadas "
+            "e formação das virtudes. Oferece também formação para os pais."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Bruna Rosa de Oliveira Machado",
+        "vice_diretora": "Marina Farias",
+        "secretaria": "Aline Alves dos Santos",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Clube do livro",
+            "Aula de doutrina",
+            "Casa prática",
+            "Oficinas de cuidado com o lar",
+            "Culinária",
+            "Bordado",
+            "Jardinagem",
+            "Música",
+            "Desenho e pintura",
+            "Artesanato",
+            "Moda e comportamento",
+            "Esporte",
+            "Formação das virtudes",
+            "Formação para os pais",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -194,16 +285,31 @@ CLUBES = [
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
         "idades": "11 a 17 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube juvenil da Asa Sul, formação aprofundada para jovens.",
+        "total_associadas": 47,
+        "funcionamento": "Sábado, das 9h30 às 12h",
+        "descricao_curta": "Maior clube juvenil da Asa Sul, com 47 jovens em formação.",
         "descricao": (
-            "O Clube Andorinha, localizado na Asa Sul, oferece formação aprofundada para "
-            "jovens de 11 a 17 anos, com atividades adaptadas à fase da adolescência."
+            "O Clube Andorinha, localizado em Brasília, é um dos maiores clubes juvenis da "
+            "Associação Laços, atendendo 47 jovens de 11 a 17 anos. Oferece um amplo leque "
+            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
+            "integral das associadas."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Emanuelle Dias Weiler Soares",
+        "vice_diretora": "Valessa Freiberger Tokarski Solino",
+        "secretaria": "Bianca dos Anjos Bezerra Souto",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Clube do livro",
+            "Passeios",
+            "Artes",
+            "Culinária",
+            "Arranjos florais",
+            "Moda e comportamento",
+            "Pintura",
+            "Costura",
+            "Formação das virtudes",
+            "Formação espiritual",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -213,21 +319,35 @@ CLUBES = [
         "categoria": "juvenil",
         "categoria_label": "Juvenil",
         "regiao": "Park Way",
-        "regiao_completa": "Park Way — Brasília/DF",
-        "destaque": False,
+        "regiao_completa": "Park Way / Águas Claras — Brasília/DF",
+        "destaque": True,
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
         "idades": "11 a 17 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube juvenil do Park Way, jovens em formação e amizade.",
+        "total_associadas": 32,
+        "funcionamento": "Sábado, das 9h às 11h30",
+        "descricao_curta": "Clube juvenil do Park Way com 32 associadas em formação integral.",
         "descricao": (
-            "O Clube Magnólia, localizado no Park Way, é um espaço de formação para jovens "
-            "de 11 a 17 anos, com foco em amizade e crescimento integral."
+            "O Clube Magnólia, localizado no Park Way de Águas Claras, atende 32 jovens "
+            "de 11 a 17 anos. Oferece atividades culturais, artísticas e de formação "
+            "espiritual, com acompanhamento de sacerdote e momentos de meditação."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Fernanda Andrade",
+        "vice_diretora": "Alessandra Navarrete",
+        "secretaria": "Priscila Soares",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Passeios",
+            "Artes",
+            "Culinária",
+            "Arranjos florais",
+            "Moda e comportamento",
+            "Pintura",
+            "Costura",
+            "Meditação",
+            "Acompanhamento do sacerdote",
+            "Confissão",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },
@@ -242,16 +362,31 @@ CLUBES = [
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
         "idades": "11 a 17 anos",
-        "total_associadas": None,
-        "descricao_curta": "Clube juvenil do Lago Sul, atividades para jovens em formação.",
+        "total_associadas": 30,
+        "funcionamento": "Sábado, das 9h30 às 12h15",
+        "descricao_curta": "Clube juvenil do Lago Sul com formação espiritual e prática.",
         "descricao": (
-            "O Clube Orquídea, localizado no Lago Sul, atende jovens de 11 a 17 anos em "
-            "um ambiente formativo e desafiador."
+            "O Clube Juvenil Orquídea, localizado no Lago Sul, atende 30 jovens de 11 a "
+            "17 anos. Oferece formação aprofundada com atendimento e meditação com o "
+            "Padre Jorge, clube de leitura, formação para os pais e aulas práticas que "
+            "vão de culinária a moda e comportamento."
         ),
-        "diretora": None,
-        "vice_diretora": None,
-        "secretaria": None,
+        "diretora": "Patrícia Tusco",
+        "vice_diretora": "Leslie Alves",
+        "secretaria": "Ana Cristina Farias",
         "monitora": None,
+        "atividades_oferecidas": [
+            "Atendimento e Meditação com o Padre Jorge",
+            "Formação das virtudes",
+            "Clube de leitura",
+            "Formação para os pais",
+            "Culinária",
+            "Organização",
+            "Organização dos estudos",
+            "Nutrição",
+            "Artesanato",
+            "Moda e comportamento",
+        ],
         "link_inscricao": "#",
         "ativo": True,
     },

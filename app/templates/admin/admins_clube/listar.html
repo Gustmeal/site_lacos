@@ -1,0 +1,152 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Admins de Clube{% endblock %}
+
+{% block body %}
+
+{# Header igual aos outros templates do admin #}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition">
+                    <img src="{{ url_for('static', filename='img/logo-lacos.png') }}" alt="Logo" class="h-8 w-auto">
+                    <div class="hidden sm:block">
+                        <span class="text-sm font-bold text-lacos-marinho">Laços</span>
+                        <span class="block text-xs text-gray-500">Painel Admin</span>
+                    </div>
+                </a>
+            </div>
+            <a href="{{ url_for('admin.logout') }}"
+               class="inline-flex items-center gap-1.5 text-sm bg-gray-100 hover:bg-lacos-vermelho-suave text-gray-700 px-3 py-2 rounded-lg font-semibold transition">
+                Sair
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                    {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Admins de Clube</li>
+        </ol>
+    </nav>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Admins de Clube</h1>
+            <p class="text-gray-600">Contas vinculadas a clubes específicos. Cada clube tem 1 conta.</p>
+        </div>
+        <a href="{{ url_for('admin.admin_clubes_criar') }}"
+           class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            Novo Admin de Clube
+        </a>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-marinho">{{ estatisticas.total }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Total</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-verde-escuro">{{ estatisticas.ativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Ativos</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-gray-400">{{ estatisticas.inativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Inativos</div>
+        </div>
+    </div>
+
+    {% if admins %}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+        <div class="divide-y divide-gray-100">
+            {% for admin in admins %}
+            <div class="p-5 hover:bg-gray-50 transition {% if not admin.ativo %}opacity-60{% endif %}">
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 {% if admin.ativo %}bg-lacos-marinho{% else %}bg-gray-400{% endif %} rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {{ admin.nome[0]|upper }}
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 class="text-lg font-bold text-gray-800">{{ admin.nome }}</h3>
+                            {% if admin.ativo %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded-full">
+                                <span class="w-1.5 h-1.5 bg-lacos-verde rounded-full"></span>
+                                Ativo
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">
+                                Inativo
+                            </span>
+                            {% endif %}
+                            {% if admin.clube_info %}
+                            <span class="inline-flex items-center px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                                {{ admin.clube_info.nome }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                            <span>{{ admin.email }}</span>
+                            {% if admin.clube_info %}
+                            <span class="text-xs">{{ admin.clube_info.regiao }}</span>
+                            {% endif %}
+                            {% if admin.ultimo_login %}
+                            <span class="text-xs">Último acesso: {{ admin.ultimo_login.strftime('%d/%m/%Y %H:%M') }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <a href="{{ url_for('admin.admin_clubes_editar', admin_id=admin.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-azul-suave text-lacos-azul-escuro rounded-lg hover:bg-lacos-azul hover:text-white font-semibold transition">
+                            <span class="hidden sm:inline">Editar</span>
+                        </a>
+                        <a href="{{ url_for('admin.admin_clubes_resetar_senha', admin_id=admin.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-amarelo-suave text-lacos-amarelo-escuro rounded-lg hover:bg-lacos-amarelo hover:text-white font-semibold transition">
+                            <span class="hidden sm:inline">Senha</span>
+                        </a>
+                        <form method="POST" action="{{ url_for('admin.admin_clubes_toggle_ativo', admin_id=admin.id) }}"
+                              onsubmit="return confirm('{% if admin.ativo %}Desativar{% else %}Ativar{% endif %} {{ admin.nome|e }}?');"
+                              class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit"
+                                    class="inline-flex items-center gap-1 px-3 py-2 text-sm {% if admin.ativo %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro hover:bg-lacos-vermelho{% else %}bg-lacos-verde-suave text-lacos-verde-escuro hover:bg-lacos-verde{% endif %} hover:text-white rounded-lg font-semibold transition">
+                                <span class="hidden sm:inline">{% if admin.ativo %}Desativar{% else %}Ativar{% endif %}</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhum admin de clube ainda</h3>
+        <p class="text-gray-600 mb-6">Crie a primeira conta de clube clicando no botão acima.</p>
+    </div>
+    {% endif %}
+</main>
+
+{% endblock %}

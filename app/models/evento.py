@@ -34,7 +34,14 @@ class Evento(db.Model):
     imagem = db.Column(db.String(255), nullable=True)
 
     # Relacionamento
-    autor_id = db.Column(db.Integer, db.ForeignKey("usuarios.id"), nullable=False)
+    # Adicionar dentro da classe Evento, junto com os outros campos:
+    autor_id = db.Column(
+        db.Integer,
+        db.ForeignKey("usuarios.id"),
+        nullable=True,
+    )
+
+    autor = db.relationship("Usuario", backref="eventos_criados")
 
     # Auditoria
     criado_em = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
