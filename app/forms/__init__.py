@@ -13,6 +13,11 @@ from app.forms.admin_clube_forms import (
     CriarAdminClubeForm,
     EditarAdminClubeForm,
 )
+from app.forms.familia_forms import (
+    CriarFamiliaForm,
+    EditarFamiliaForm,
+)
+
 
 __all__ = [
     "LoginForm",
@@ -24,4 +29,6 @@ __all__ = [
     "IntencaoClubeForm",
     "CriarAdminClubeForm",
     "EditarAdminClubeForm",
+    "CriarFamiliaForm",
+    "EditarFamiliaForm",
 ]

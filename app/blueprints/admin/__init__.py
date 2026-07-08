@@ -17,4 +17,6 @@ from app.blueprints.admin import (
     eventos_routes,
     usuarios_routes,
     admin_clubes_routes,
+    familias_routes,
+    candidatas_routes,
 )

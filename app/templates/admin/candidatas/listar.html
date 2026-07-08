@@ -1,0 +1,116 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Candidatas de {{ familia.nome }}{% endblock %}
+
+{% block body %}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3">
+                <img src="{{ url_for('static', filename='img/logo-lacos.png') }}" alt="Logo" class="h-8 w-auto">
+                <span class="hidden sm:block text-sm font-bold text-lacos-marinho">Laços Admin</span>
+            </a>
+            <a href="{{ url_for('admin.logout') }}" class="text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">Sair</a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro{% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro{% else %}bg-lacos-azul-suave text-lacos-azul-escuro{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li><a href="{{ url_for('admin.familias_listar') }}" class="hover:text-lacos-marinho">Famílias</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">{{ familia.nome }}</li>
+        </ol>
+    </nav>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Candidatas</h1>
+            <p class="text-gray-600">Filhas da família <strong>{{ familia.nome }}</strong> ({{ familia.email }})</p>
+        </div>
+        <a href="{{ url_for('admin.candidatas_criar', familia_id=familia.id) }}"
+           class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            Adicionar Candidata
+        </a>
+    </div>
+
+    {% if candidatas %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for c in candidatas %}
+        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-5 {% if not c.ativa %}opacity-60{% endif %}">
+            <div class="flex items-start gap-4 mb-4">
+                <div class="flex-shrink-0 w-12 h-12 {% if c.ativa %}bg-lacos-marinho{% else %}bg-gray-400{% endif %} rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    {{ c.nome[0]|upper }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 class="text-lg font-bold text-gray-800">{{ c.nome }}</h3>
+                        {% if c.ativa %}
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded-full">Ativa</span>
+                        {% else %}
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">Inativa</span>
+                        {% endif %}
+                    </div>
+                    {% if c.idade %}<p class="text-sm text-gray-600">{{ c.idade }} anos</p>{% endif %}
+                    {% if c.clube_info %}
+                    <p class="text-sm text-gray-700 mt-1">
+                        <strong>Clube {{ c.clube_info.nome }}</strong> — {{ c.clube_info.regiao }}
+                    </p>
+                    {% endif %}
+                    {% if c.observacoes %}
+                    <p class="text-xs text-gray-500 mt-2 italic">{{ c.observacoes }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-gray-100">
+                <a href="{{ url_for('admin.candidatas_editar', candidata_id=c.id) }}"
+                   class="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-sm bg-lacos-azul-suave text-lacos-azul-escuro rounded-lg hover:bg-lacos-azul hover:text-white font-semibold transition">
+                    Editar
+                </a>
+                <form method="POST" action="{{ url_for('admin.candidatas_excluir', candidata_id=c.id) }}"
+                      onsubmit="return confirm('Excluir a candidata {{ c.nome|e }}?');"
+                      class="flex-1">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit"
+                            class="w-full inline-flex items-center justify-center gap-1 px-3 py-2 text-sm bg-lacos-vermelho-suave text-lacos-vermelho-escuro hover:bg-lacos-vermelho hover:text-white rounded-lg font-semibold transition">
+                        Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma candidata cadastrada</h3>
+        <p class="text-gray-600 mb-6">Adicione a primeira filha dessa família.</p>
+        <a href="{{ url_for('admin.candidatas_criar', familia_id=familia.id) }}"
+           class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition">
+            Adicionar Candidata
+        </a>
+    </div>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('admin.familias_listar') }}" class="text-sm text-gray-600 hover:text-lacos-marinho">
+            ← Voltar para lista de famílias
+        </a>
+    </div>
+</main>
+{% endblock %}

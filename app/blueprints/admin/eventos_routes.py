@@ -12,6 +12,7 @@ from app.blueprints.admin import admin_bp
 from app.forms import EventoForm
 from app.models.evento import Evento
 from app.extensions import db
+from app.utils.decorators import admin_required
 
 
 @admin_bp.route("/eventos")
@@ -55,6 +56,7 @@ def eventos_listar():
 
 @admin_bp.route("/eventos/novo", methods=["GET", "POST"])
 @login_required
+@admin_required
 def eventos_criar():
     """Cria um novo evento."""
 
@@ -91,6 +93,7 @@ def eventos_criar():
 
 @admin_bp.route("/eventos/<int:evento_id>/editar", methods=["GET", "POST"])
 @login_required
+@admin_required
 def eventos_editar(evento_id):
     """Edita um evento existente."""
 
@@ -134,6 +137,7 @@ def eventos_editar(evento_id):
 
 @admin_bp.route("/eventos/<int:evento_id>/excluir", methods=["POST"])
 @login_required
+@admin_required
 def eventos_excluir(evento_id):
     """Exclui um evento."""
 
@@ -155,6 +159,7 @@ def eventos_excluir(evento_id):
 
 @admin_bp.route("/eventos/<int:evento_id>/toggle-publicado", methods=["POST"])
 @login_required
+@admin_required
 def eventos_toggle_publicado(evento_id):
     """Alterna o status de publicação do evento."""
 

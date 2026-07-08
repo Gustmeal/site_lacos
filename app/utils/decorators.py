@@ -84,3 +84,25 @@ def clube_required(slug_param="slug"):
         return decorated_function
 
     return decorator
+
+
+def familia_required(f):
+    """
+    Permite acesso apenas para usuários com role 'familia'.
+
+    Admins (geral ou de clube) NÃO passam.
+    Se não estiver logado, redireciona para o login único (/login).
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for("auth.login"))
+
+        if not current_user.is_familia():
+            flash("Esta área é exclusiva para famílias cadastradas.", "erro")
+            return redirect(url_for("public.home"))
+
+        return f(*args, **kwargs)
+
+    return decorated_function

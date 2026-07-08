@@ -20,6 +20,8 @@ from app.forms import (
 from app.models.usuario import Usuario
 from app.extensions import db
 from app.utils.decorators import admin_geral_required
+from app.models import ROLE_FAMILIA
+
 
 def _contar_admins_ativos():
     """Conta quantos admins ativos existem no sistema."""
@@ -39,9 +41,10 @@ def _eh_ultimo_admin_ativo(usuario):
 def usuarios_listar():
     """Lista todos os usuários administrativos."""
 
-    # Ordena: ativos primeiro, depois por nome
+    # Lista apenas admins (geral e de clube), NUNCA famílias
     usuarios = (
         Usuario.query
+        .filter(Usuario.role != ROLE_FAMILIA)
         .order_by(Usuario.ativo.desc(), Usuario.nome.asc())
         .all()
     )
@@ -181,7 +184,6 @@ def usuarios_editar(usuario_id):
 
 @admin_bp.route("/usuarios/<int:usuario_id>/resetar-senha", methods=["GET", "POST"])
 @login_required
-@admin_geral_required
 def usuarios_resetar_senha(usuario_id):
     """Reseta a senha de outro usuário."""
 
@@ -240,7 +242,6 @@ def usuarios_toggle_ativo(usuario_id):
 
 @admin_bp.route("/minha-conta", methods=["GET", "POST"])
 @login_required
-@admin_geral_required
 def minha_conta():
     """Página para o usuário gerenciar a própria conta."""
 

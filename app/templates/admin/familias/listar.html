@@ -1,0 +1,204 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Famílias{% endblock %}
+
+{% block body %}
+<header class="bg-white border-b border-gray-200 shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3">
+                <img src="{{ url_for('static', filename='img/logo-lacos.png') }}" alt="Logo" class="h-8 w-auto">
+                <span class="hidden sm:block text-sm font-bold text-lacos-marinho">Laços Admin</span>
+            </a>
+            <a href="{{ url_for('admin.logout') }}" class="text-sm bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho text-gray-700 px-3 py-2 rounded-lg font-semibold transition">Sair</a>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Famílias</li>
+        </ol>
+    </nav>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Famílias</h1>
+        <p class="text-gray-600">
+            {% if current_user.is_admin_clube() %}
+                Famílias do seu clube.
+            {% elif filtro_clube == 'sem_candidatas' %}
+                Famílias sem candidatas cadastradas.
+            {% elif clube_filtrado_info %}
+                Famílias com candidatas no <strong class="text-lacos-marinho">Clube {{ clube_filtrado_info.nome }}</strong>.
+            {% else %}
+                Todas as famílias cadastradas.
+            {% endif %}
+        </p>
+    </div>
+    <a href="{{ url_for('admin.familias_criar') }}"
+       class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+        </svg>
+        Cadastrar Família
+    </a>
+</div>
+
+{# Dropdown de filtro por clube — só admin geral vê #}
+{% if current_user.is_admin_geral() and clubes_disponiveis %}
+<div class="bg-white rounded-2xl border border-gray-100 p-4 mb-6">
+    <form method="GET" action="{{ url_for('admin.familias_listar') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <label for="clube" class="text-sm font-bold text-gray-700 whitespace-nowrap">
+            Filtrar por clube:
+        </label>
+        <select name="clube" id="clube"
+                onchange="this.form.submit()"
+                class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none bg-white">
+            <option value="">Todos os clubes</option>
+            <option value="sem_candidatas" {% if filtro_clube == 'sem_candidatas' %}selected{% endif %}>
+                — Sem candidatas —
+            </option>
+            <optgroup label="Clubes">
+                {% for clube in clubes_disponiveis %}
+                <option value="{{ clube.slug }}" {% if filtro_clube == clube.slug %}selected{% endif %}>
+                    {{ clube.nome }} — {{ clube.regiao }}
+                </option>
+                {% endfor %}
+            </optgroup>
+        </select>
+
+        {% if filtro_clube %}
+        <a href="{{ url_for('admin.familias_listar') }}"
+           class="inline-flex items-center justify-center gap-1 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+            </svg>
+            Limpar filtro
+        </a>
+        {% endif %}
+    </form>
+</div>
+{% endif %}
+
+    <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-marinho">{{ estatisticas.total }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Total</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-lacos-verde-escuro">{{ estatisticas.ativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Ativas</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center">
+            <div class="text-3xl font-extrabold text-gray-400">{{ estatisticas.inativos }}</div>
+            <div class="text-xs text-gray-600 font-semibold uppercase">Inativas</div>
+        </div>
+    </div>
+
+    {% if familias %}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+        <div class="divide-y divide-gray-100">
+            {% for f in familias %}
+            <div class="p-5 hover:bg-gray-50 transition {% if not f.ativo %}opacity-60{% endif %}">
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 {% if f.ativo %}bg-lacos-marinho{% else %}bg-gray-400{% endif %} rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {{ f.nome[0]|upper }}
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 class="text-lg font-bold text-gray-800">{{ f.nome }}</h3>
+                            {% if f.ativo %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-verde-suave text-lacos-verde-escuro text-xs font-bold rounded-full">
+                                <span class="w-1.5 h-1.5 bg-lacos-verde rounded-full"></span>
+                                Ativa
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">
+                                Inativa
+                            </span>
+                            {% endif %}
+                            {% if f.clube_info %}
+                            <span class="inline-flex items-center px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                                {{ f.clube_info.nome }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-1">
+                            <span>{{ f.email }}</span>
+                            <span>·</span>
+                            <span>{{ f.telefone }}</span>
+                        </div>
+                        <div class="text-sm text-gray-700">
+                            {% if f.candidatas_visiveis %}
+                                <strong>Candidatas:</strong>
+                                {% for c in f.candidatas_visiveis %}
+                                    {{ c.nome }}{% if c.idade %} ({{ c.idade }}){% endif %}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-gray-400 italic">Sem candidatas cadastradas</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <a href="{{ url_for('admin.candidatas_listar', familia_id=f.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-marinho-suave text-lacos-marinho rounded-lg hover:bg-lacos-marinho hover:text-white font-semibold transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                            </svg>
+                            <span class="hidden sm:inline">Candidatas ({{ f.candidatas_visiveis|length }})</span>
+                            <span class="sm:hidden">{{ f.candidatas_visiveis|length }}</span>
+                        </a>
+                        <a href="{{ url_for('admin.familias_editar', familia_id=f.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-azul-suave text-lacos-azul-escuro rounded-lg hover:bg-lacos-azul hover:text-white font-semibold transition">
+                            <span class="hidden sm:inline">Editar</span>
+                        </a>
+                        <a href="{{ url_for('admin.familias_resetar_senha', familia_id=f.id) }}"
+                           class="inline-flex items-center gap-1 px-3 py-2 text-sm bg-lacos-amarelo-suave text-lacos-amarelo-escuro rounded-lg hover:bg-lacos-amarelo hover:text-white font-semibold transition">
+                            <span class="hidden sm:inline">Senha</span>
+                        </a>
+                        <form method="POST" action="{{ url_for('admin.familias_toggle_ativo', familia_id=f.id) }}"
+                              onsubmit="return confirm('{% if f.ativo %}Desativar{% else %}Ativar{% endif %} {{ f.nome|e }}?');"
+                              class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit"
+                                    class="inline-flex items-center gap-1 px-3 py-2 text-sm {% if f.ativo %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro hover:bg-lacos-vermelho{% else %}bg-lacos-verde-suave text-lacos-verde-escuro hover:bg-lacos-verde{% endif %} hover:text-white rounded-lg font-semibold transition">
+                                <span class="hidden sm:inline">{% if f.ativo %}Desativar{% else %}Ativar{% endif %}</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma família cadastrada</h3>
+        <p class="text-gray-600 mb-6">Comece cadastrando a primeira família.</p>
+        <a href="{{ url_for('admin.familias_criar') }}"
+           class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition">
+            Cadastrar Família
+        </a>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

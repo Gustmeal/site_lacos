@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}Painel da Família | Laços{% endblock %}
+
+{% block content %}
+<section class="py-12 md:py-16 bg-gradient-to-b from-lacos-marinho-suave to-white min-h-[70vh]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">
+                Olá, {{ current_user.nome }}!
+            </h1>
+            <p class="text-lg text-gray-600">
+                Bem-vinda à sua área na Associação Laços.
+            </p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-6 px-4 py-3 rounded-lg
+                        {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                        {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                        {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- CARD 1: CANDIDATAS -->
+        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-8 mb-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="inline-flex items-center justify-center w-10 h-10 bg-lacos-marinho-suave rounded-xl">
+                    <svg class="w-5 h-5 text-lacos-marinho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-extrabold text-gray-800">
+                    {% if candidatas|length > 1 %}Suas Candidatas{% else %}Sua Candidata{% endif %}
+                </h2>
+            </div>
+
+            {% if candidatas %}
+            <div class="space-y-4">
+                {% for c in candidatas %}
+                <div class="bg-lacos-marinho-suave/40 rounded-xl p-5 border border-lacos-marinho/10">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="flex-shrink-0 w-14 h-14 bg-lacos-marinho rounded-full flex items-center justify-center text-white font-extrabold text-xl">
+                            {{ c.nome[0]|upper }}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 mb-1">{{ c.nome }}</h3>
+                            {% if c.idade %}
+                            <p class="text-sm text-gray-600 mb-2">{{ c.idade }} anos</p>
+                            {% endif %}
+                            {% if c.clube_info %}
+                            <div class="flex items-center gap-2 text-sm text-gray-700">
+                                <svg class="w-4 h-4 text-lacos-marinho" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
+                                </svg>
+                                <strong>Clube {{ c.clube_info.nome }}</strong> — {{ c.clube_info.regiao }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <a href="{{ formulario_matricula_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="w-full inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-5 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft group">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/>
+                        </svg>
+                        Preencher Formulário de Matrícula
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if candidatas|length > 1 %}
+            <p class="text-xs text-gray-500 mt-4 text-center">
+                Preencha um formulário para cada candidata.
+            </p>
+            {% endif %}
+            {% else %}
+            <p class="text-gray-600 text-center py-6">
+                Nenhuma candidata cadastrada ainda.
+                <br>
+                <span class="text-sm">Entre em contato com o clube.</span>
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- CARD 2: MINHA CONTA -->
+        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-8 mb-6">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="inline-flex items-center justify-center w-10 h-10 bg-lacos-verde-suave rounded-xl">
+                    <svg class="w-5 h-5 text-lacos-verde-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-extrabold text-gray-800">Minha Conta</h2>
+            </div>
+
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Responsável</dt>
+                    <dd class="font-semibold text-gray-800">{{ current_user.nome }}</dd>
+                </div>
+                <div>
+                    <dt class="text-xs uppercase font-bold text-gray-500 mb-1">E-mail</dt>
+                    <dd class="font-semibold text-gray-800 break-all">{{ current_user.email }}</dd>
+                </div>
+                {% if current_user.telefone %}
+                <div>
+                    <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Telefone</dt>
+                    <dd class="font-semibold text-gray-800">{{ current_user.telefone }}</dd>
+                </div>
+                {% endif %}
+                {% if current_user.endereco %}
+                <div>
+                    <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Endereço</dt>
+                    <dd class="font-semibold text-gray-800">{{ current_user.endereco }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+
+            <a href="{{ url_for('familia.minha_conta') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 bg-lacos-verde-suave text-lacos-verde-escuro rounded-lg font-semibold hover:bg-lacos-verde hover:text-white transition text-sm">
+                Alterar Senha
+            </a>
+        </div>
+
+        <!-- CARD 3: INFORMAÇÕES -->
+        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="inline-flex items-center justify-center w-10 h-10 bg-lacos-azul-suave rounded-xl">
+                    <svg class="w-5 h-5 text-lacos-azul-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-extrabold text-gray-800">Informações Importantes</h2>
+            </div>
+
+            <ul class="space-y-3 text-sm text-gray-700">
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-lacos-verde flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+                    </svg>
+                    <span>Preencha o formulário de matrícula para efetivar a inscrição de cada candidata.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-lacos-verde flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+                    </svg>
+                    <span>Para adicionar ou remover candidatas, entre em contato com seu clube.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-lacos-verde flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/>
+                    </svg>
+                    <span>Qualquer alteração nos dados cadastrais deve ser solicitada ao clube.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{{ url_for('auth.logout') }}"
+               class="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-lacos-vermelho-suave hover:text-lacos-vermelho-escuro text-gray-700 rounded-lg font-bold transition">
+                Sair
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
