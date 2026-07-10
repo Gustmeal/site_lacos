@@ -66,4 +66,4 @@ def logout():
     nome = current_user.nome
     logout_user()
     flash(f"Sessão encerrada. Até logo, {nome}!", "info")
-    return redirect(url_for("admin.login"))
+    return redirect(url_for("public.home"))

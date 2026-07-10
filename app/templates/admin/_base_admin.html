@@ -1,60 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
+{% extends 'base.html' %}
 
-    <title>{% block title %}Painel Admin{% endblock %} - Laços</title>
+{% block content %}
+{# Sidebar #}
+{% include 'admin/components/sidebar.html' %}
 
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
-
-    {# Google Fonts: Nunito #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    {# Tailwind CSS via CDN #}
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    {# Configuração do Tailwind com a paleta da Laços #}
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'lacos-marinho': '#041162',
-                        'lacos-marinho-claro': '#1a2380',
-                        'lacos-vermelho': '#F23D50',
-                        'lacos-azul': '#288ECE',
-                        'lacos-verde': '#70C148',
-                        'lacos-amarelo': '#FFBC3A',
-                        'lacos-vermelho-escuro': '#D62F40',
-                        'lacos-azul-escuro': '#1F77B0',
-                        'lacos-verde-escuro': '#27590E',
-                        'lacos-amarelo-escuro': '#E8A82F',
-                        'lacos-vermelho-suave': '#FDE8EB',
-                        'lacos-azul-suave': '#E5F1F9',
-                        'lacos-verde-suave': '#EAF6E2',
-                        'lacos-amarelo-suave': '#FFF4DD',
-                        'lacos-marinho-suave': '#E5E7F0',
-                    },
-                    fontFamily: {
-                        'sans': ['Nunito', 'system-ui', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
-                        'soft-lg': '0 8px 30px rgba(0, 0, 0, 0.08)',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="font-sans bg-gray-50 text-gray-800 min-h-screen flex flex-col">
-
-    {% block body %}{% endblock %}
-
-    {% block scripts %}{% endblock %}
-</body>
-</html>
+{# Área principal (com margem para o sidebar em desktop) #}
+<div class="lg:ml-64 min-h-screen bg-gray-50">
+    {% block admin_content %}{% endblock %}
+</div>
+{% endblock %}
