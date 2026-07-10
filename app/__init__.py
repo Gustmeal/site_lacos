@@ -13,6 +13,8 @@ Padrão Application Factory:
 import os
 from pathlib import Path
 from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 from app.config import config_by_name
 from app.extensions import (
     db,
@@ -28,14 +30,6 @@ from app.extensions import (
 def create_app(config_name=None):
     """
     Cria e configura uma instância da aplicação Flask.
-
-    Args:
-        config_name: Nome da configuração ('development', 'production',
-                     'testing'). Se None, usa a variável de ambiente
-                     FLASK_ENV ou 'development' como padrão.
-
-    Returns:
-        Flask app configurada.
     """
     # Define qual configuração usar
     if config_name is None:
@@ -46,15 +40,27 @@ def create_app(config_name=None):
     app.config.from_object(config_by_name[config_name])
 
     # ==========================================
-    # CRIAÇÃO REFORÇADA DA PASTA INSTANCE
+    # PROXY FIX — obrigatório em produção (Railway)
     # ==========================================
-    # Necessário para SQLite criar o arquivo do banco corretamente.
-    # Cria a pasta na raiz do projeto (caminho absoluto).
+    # O Railway serve HTTPS através de um proxy reverso.
+    # Sem essa configuração, o Flask não sabe que está atrás de HTTPS,
+    # e cookies com SESSION_COOKIE_SECURE=True são rejeitados.
+    if config_name == "production":
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app,
+            x_for=1,
+            x_proto=1,
+            x_host=1,
+            x_prefix=1,
+        )
+
+    # ==========================================
+    # PASTA INSTANCE (para SQLite local)
+    # ==========================================
     basedir = Path(__file__).resolve().parent.parent
     instance_dir = basedir / "instance"
     instance_dir.mkdir(parents=True, exist_ok=True)
 
-    # Também tenta criar via Flask (redundância de segurança)
     try:
         os.makedirs(app.instance_path, exist_ok=True)
     except OSError:
@@ -87,10 +93,15 @@ def _initialize_extensions(app):
     csrf.init_app(app)
     limiter.init_app(app)
 
-    # IMPORTANTE: Importa os modelos para que o Flask-Migrate os detecte.
+    # IMPORTANTE: Importa todos os modelos para que o Flask-Migrate os detecte.
+    # Não chama db.create_all() — usamos migrations (flask db upgrade).
     with app.app_context():
-        from app.models import Usuario, Evento  # noqa: F401
-        db.create_all()
+        from app.models import (  # noqa: F401
+            Usuario,
+            Evento,
+            Candidata,
+            IntencaoClube,
+        )
 
 
 def _register_blueprints(app):

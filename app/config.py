@@ -43,12 +43,17 @@ class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
 
-    # Em produção, força HTTPS e cookies seguros
+    # === COOKIES DE SESSÃO ===
+    # Força HTTPS e cookies seguros (Railway serve via HTTPS)
     SESSION_COOKIE_SECURE = True
     REMEMBER_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
 
+    # Força url_for a gerar URLs com https://
+    PREFERRED_URL_SCHEME = "https"
+
+    # === BANCO DE DADOS ===
     # Railway fornece DATABASE_URL automaticamente
     # Mas pode vir como "postgres://" - precisa converter para "postgresql://"
     @staticmethod
