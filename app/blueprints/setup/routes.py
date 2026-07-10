@@ -5,7 +5,7 @@ Para criar o primeiro admin em produção, use:
     GET  /setup/status          → verifica se setup é necessário
     POST /setup/criar-admin     → cria o primeiro admin
 
-A rota só funciona se NÃO existir nenhum usuário no banco
+A rota só funciona se NÃO existir nenhum ADMIN GERAL no banco
 e se a SETUP_SECRET_KEY for fornecida corretamente.
 """
 
@@ -14,12 +14,15 @@ from flask import render_template, request, flash, redirect, url_for, abort
 
 from app.blueprints.setup import setup_bp
 from app.extensions import db, limiter
-from app.models.usuario import Usuario
+from app.models.usuario import Usuario, ROLE_ADMIN_GERAL
 
 
 def _setup_disponivel():
-    """Verifica se o setup ainda é necessário."""
-    return Usuario.query.count() == 0
+    """
+    Verifica se o setup ainda é necessário.
+    Setup fica disponível se NÃO existe nenhum admin geral no banco.
+    """
+    return Usuario.query.filter_by(role=ROLE_ADMIN_GERAL).count() == 0
 
 
 def _validar_secret_key(chave_fornecida):
@@ -40,7 +43,7 @@ def status():
     """Página inicial de status do setup."""
 
     if not _setup_disponivel():
-        # Já tem usuário, setup não é mais necessário
+        # Já tem admin geral, setup não é mais necessário
         return render_template("setup/desativado.html")
 
     return render_template("setup/status.html")
@@ -49,9 +52,9 @@ def status():
 @setup_bp.route("/criar-admin", methods=["GET", "POST"])
 @limiter.limit("3 per minute")
 def criar_admin():
-    """Cria o primeiro admin do sistema (só funciona se não existir usuário)."""
+    """Cria o primeiro admin geral do sistema (só funciona se não existir admin geral)."""
 
-    # Bloqueia se já tem usuário no banco
+    # Bloqueia se já tem admin geral no banco
     if not _setup_disponivel():
         return render_template("setup/desativado.html")
 
@@ -84,6 +87,11 @@ def criar_admin():
         if senha != senha_confirma:
             erros.append("As senhas não conferem.")
 
+        # Verifica se já existe usuário com esse email
+        existente = Usuario.query.filter_by(email=email).first()
+        if existente:
+            erros.append(f"Já existe um usuário com o e-mail {email}.")
+
         # Se tem erros, mostra a página com mensagens
         if erros:
             for erro in erros:
@@ -94,12 +102,12 @@ def criar_admin():
                 email=email,
             )
 
-        # Cria o usuário
+        # Cria o usuário admin geral
         try:
             novo_admin = Usuario(
                 nome=nome,
                 email=email,
-                role="admin",
+                role=ROLE_ADMIN_GERAL,   # ← CORRIGIDO
                 ativo=True,
             )
             novo_admin.set_senha(senha)
