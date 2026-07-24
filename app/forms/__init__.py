@@ -17,7 +17,7 @@ from app.forms.familia_forms import (
     CriarFamiliaForm,
     EditarFamiliaForm,
 )
-
+from app.forms.inscricao_forms import InscricaoForm
 
 __all__ = [
     "LoginForm",

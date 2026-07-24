@@ -1,0 +1,323 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Inscrição - {{ inscricao.nome_associada }}{% endblock %}
+
+{% block admin_content %}
+<main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500 flex-wrap">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li><a href="{{ url_for('admin.inscricoes_listar') }}" class="hover:text-lacos-marinho">Inscrições</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">{{ inscricao.nome_associada }}</li>
+        </ol>
+    </nav>
+
+    {# CABEÇALHO #}
+    <div class="mb-6">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">{{ inscricao.nome_associada }}</h1>
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+            {% if clube_info %}
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                Clube {{ clube_info.nome }}
+            </span>
+            {% endif %}
+            {% if familia %}
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-lacos-azul-suave text-lacos-azul-escuro text-xs font-bold rounded-full">
+                Família: {{ familia.nome }}
+            </span>
+            {% endif %}
+        </div>
+        <p class="text-sm text-gray-500">
+            Enviada em {{ inscricao.criada_em.strftime('%d/%m/%Y às %H:%M') }}
+            {% if inscricao.atualizada_em != inscricao.criada_em %}
+                · Atualizada em {{ inscricao.atualizada_em.strftime('%d/%m/%Y às %H:%M') }}
+            {% endif %}
+        </p>
+    </div>
+
+    {# BLOCO INFORMATIVO — CONTATO DA FAMÍLIA #}
+    {% if familia %}
+    <div class="bg-lacos-marinho-suave/40 border border-lacos-marinho/20 rounded-2xl p-5 mb-6">
+        <h3 class="text-sm font-bold text-lacos-marinho mb-3 uppercase">Contato da Família</h3>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div>
+                <dt class="text-xs font-bold text-gray-600 mb-0.5">Responsável</dt>
+                <dd class="font-semibold text-gray-800">{{ familia.nome }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs font-bold text-gray-600 mb-0.5">E-mail da conta</dt>
+                <dd class="font-semibold text-gray-800 break-all">{{ familia.email }}</dd>
+            </div>
+            {% if familia.telefone %}
+            <div>
+                <dt class="text-xs font-bold text-gray-600 mb-0.5">Telefone</dt>
+                <dd class="font-semibold text-gray-800">{{ familia.telefone }}</dd>
+            </div>
+            {% endif %}
+            {% if familia.endereco %}
+            <div>
+                <dt class="text-xs font-bold text-gray-600 mb-0.5">Endereço da família</dt>
+                <dd class="font-semibold text-gray-800">{{ familia.endereco }}</dd>
+            </div>
+            {% endif %}
+        </dl>
+    </div>
+    {% endif %}
+
+    {# SEÇÃO: DADOS DA ASSOCIADA #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Dados da Associada</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Nome</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.nome_associada }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Data de nascimento</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.data_nascimento.strftime('%d/%m/%Y') }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">CPF</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.cpf_associada or '—' }}</dd>
+            </div>
+            <div class="md:col-span-2">
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">E-mail</dt>
+                <dd class="font-semibold text-gray-800 break-all">{{ inscricao.email }}</dd>
+            </div>
+            <div class="md:col-span-2">
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Endereço</dt>
+                <dd class="font-semibold text-gray-800 whitespace-pre-line">{{ inscricao.endereco }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: ESCOLARIDADE #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Escolaridade</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Tipo de ensino</dt>
+                <dd class="font-semibold text-gray-800 capitalize">{{ inscricao.tipo_ensino }}</dd>
+            </div>
+            {% if inscricao.nome_escola %}
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Escola</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.nome_escola }}</dd>
+            </div>
+            {% endif %}
+        </dl>
+    </div>
+
+    {# SEÇÃO: DADOS DA MÃE #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Dados da Mãe</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Nome</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.nome_mae }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Data de nascimento</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.data_nascimento_mae.strftime('%d/%m/%Y') }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Profissão</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.profissao_mae }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Celular</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.celular_mae }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">E-mail</dt>
+                <dd class="font-semibold text-gray-800 break-all">{{ inscricao.email_mae }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: DADOS DO PAI #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Dados do Pai</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Nome</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.nome_pai }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Data de nascimento</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.data_nascimento_pai.strftime('%d/%m/%Y') }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Profissão</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.profissao_pai }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Celular</dt>
+                <dd class="font-semibold text-gray-800">{{ inscricao.celular_pai }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">E-mail</dt>
+                <dd class="font-semibold text-gray-800 break-all">{{ inscricao.email_pai }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: RESPONSÁVEL FINANCEIRO #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Responsável Financeiro</h2>
+        <dl class="space-y-4">
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Responsável</dt>
+                <dd class="font-semibold text-gray-800 capitalize">{{ inscricao.responsavel_financeiro }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">CPF / Dados</dt>
+                <dd class="font-semibold text-gray-800 whitespace-pre-line">{{ inscricao.cpf_responsavel_financeiro }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: CONTEXTO FAMILIAR #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Contexto Familiar</h2>
+        <dl class="space-y-4">
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Como conheceu o clube</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.como_conheceu }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Esportes / Hobbies / Habilidades</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.esportes_hobbies }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Situação dos pais / Com quem mora</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.situacao_pais }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Irmãos</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.irmaos }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: PERSONALIDADE #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-4">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Personalidade</h2>
+        <dl class="space-y-4">
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Características marcantes</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.caracteristicas }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Pontos a trabalhar</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.pontos_a_trabalhar }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: SAÚDE — em destaque com borda vermelha #}
+    <div class="bg-white rounded-2xl shadow-soft border-2 border-lacos-vermelho/20 p-6 md:p-7 mb-4">
+        <div class="flex items-center gap-3 mb-5">
+            <div class="inline-flex items-center justify-center w-9 h-9 bg-lacos-vermelho-suave rounded-xl">
+                <svg class="w-4 h-4 text-lacos-vermelho-escuro" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                </svg>
+            </div>
+            <h2 class="text-lg font-extrabold text-gray-800">Saúde <span class="text-xs font-normal text-lacos-vermelho-escuro">(atenção)</span></h2>
+        </div>
+        <dl class="space-y-4">
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Alergias</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.alergias }}</dd>
+            </div>
+            <div>
+                <dt class="text-xs uppercase font-bold text-gray-500 mb-1">Medicamento em caso de dor/febre</dt>
+                <dd class="text-gray-800 whitespace-pre-line">{{ inscricao.medicamento_administrado }}</dd>
+            </div>
+        </dl>
+    </div>
+
+    {# SEÇÃO: AUTORIZAÇÕES #}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7 mb-6">
+        <h2 class="text-lg font-extrabold text-gray-800 mb-5">Autorizações</h2>
+        <dl class="space-y-3">
+            <div class="flex items-start gap-3 p-3 border border-gray-100 rounded-lg">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0
+                    {% if inscricao.interesse_doutrina %}bg-lacos-verde text-white{% else %}bg-gray-200 text-gray-500{% endif %}">
+                    {% if inscricao.interesse_doutrina %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    {% else %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    {% endif %}
+                </span>
+                <div class="flex-1 pt-1">
+                    <div class="text-sm text-gray-800">Interesse em aulas de doutrina da igreja católica</div>
+                    <div class="text-xs font-bold {% if inscricao.interesse_doutrina %}text-lacos-verde-escuro{% else %}text-gray-500{% endif %}">
+                        {% if inscricao.interesse_doutrina %}Autorizado{% else %}Não autorizado{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 border border-gray-100 rounded-lg">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0
+                    {% if inscricao.ciente_regimento %}bg-lacos-verde text-white{% else %}bg-gray-200 text-gray-500{% endif %}">
+                    {% if inscricao.ciente_regimento %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    {% else %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    {% endif %}
+                </span>
+                <div class="flex-1 pt-1">
+                    <div class="text-sm text-gray-800">Ciência das normas de convivência (Regimento Interno)</div>
+                    <div class="text-xs font-bold {% if inscricao.ciente_regimento %}text-lacos-verde-escuro{% else %}text-gray-500{% endif %}">
+                        {% if inscricao.ciente_regimento %}Autorizado{% else %}Não autorizado{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 border border-gray-100 rounded-lg">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0
+                    {% if inscricao.autoriza_imagem %}bg-lacos-verde text-white{% else %}bg-gray-200 text-gray-500{% endif %}">
+                    {% if inscricao.autoriza_imagem %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    {% else %}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    {% endif %}
+                </span>
+                <div class="flex-1 pt-1">
+                    <div class="text-sm text-gray-800">Uso de imagem, nome e voz para publicações do clube</div>
+                    <div class="text-xs font-bold {% if inscricao.autoriza_imagem %}text-lacos-verde-escuro{% else %}text-gray-500{% endif %}">
+                        {% if inscricao.autoriza_imagem %}Autorizado{% else %}Não autorizado{% endif %}
+                    </div>
+                </div>
+            </div>
+        </dl>
+    </div>
+
+    {# AÇÕES FINAIS #}
+    <div class="flex flex-col-reverse sm:flex-row gap-3">
+        <a href="{{ url_for('admin.inscricoes_listar') }}"
+           class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+            </svg>
+            Voltar às Inscrições
+        </a>
+    </div>
+</main>
+{% endblock %}

@@ -101,6 +101,7 @@ def _initialize_extensions(app):
             Evento,
             Candidata,
             IntencaoClube,
+            Inscricao,
         )
 
 

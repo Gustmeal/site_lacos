@@ -1,0 +1,145 @@
+{% extends 'admin/_base_admin.html' %}
+{% block title %}Inscrições{% endblock %}
+
+{% block admin_content %}
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="mb-6 px-4 py-3 rounded-lg
+                    {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro
+                    {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro
+                    {% else %}bg-lacos-azul-suave text-lacos-azul-escuro{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="mb-4">
+        <ol class="flex items-center gap-2 text-sm text-gray-500">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="hover:text-lacos-marinho">Dashboard</a></li>
+            <li>/</li>
+            <li class="text-gray-800 font-semibold">Inscrições</li>
+        </ol>
+    </nav>
+
+    <div class="mb-6">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Inscrições</h1>
+        <p class="text-gray-600">
+            {% if current_user.is_admin_clube() %}
+                Inscrições do seu clube.
+            {% elif clube_filtrado_info %}
+                Inscrições do <strong class="text-lacos-marinho">Clube {{ clube_filtrado_info.nome }}</strong>.
+            {% else %}
+                Todas as inscrições enviadas.
+            {% endif %}
+        </p>
+    </div>
+
+    {# Dropdown de filtro por clube — só admin geral vê #}
+    {% if current_user.is_admin_geral() and clubes_disponiveis %}
+    <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-6">
+        <form method="GET" action="{{ url_for('admin.inscricoes_listar') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <label for="clube" class="text-sm font-bold text-gray-700 whitespace-nowrap">
+                Filtrar por clube:
+            </label>
+            <select name="clube" id="clube"
+                    onchange="this.form.submit()"
+                    class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none bg-white">
+                <option value="">Todos os clubes</option>
+                {% for clube in clubes_disponiveis %}
+                <option value="{{ clube.slug }}" {% if filtro_clube == clube.slug %}selected{% endif %}>
+                    {{ clube.nome }} — {{ clube.regiao }}
+                </option>
+                {% endfor %}
+            </select>
+
+            {% if filtro_clube %}
+            <a href="{{ url_for('admin.inscricoes_listar') }}"
+               class="inline-flex items-center justify-center gap-1 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                </svg>
+                Limpar filtro
+            </a>
+            {% endif %}
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-6 text-center">
+        <div class="text-3xl font-extrabold text-lacos-marinho">{{ estatisticas.total }}</div>
+        <div class="text-xs text-gray-600 font-semibold uppercase">
+            {% if estatisticas.total == 1 %}Inscrição{% else %}Inscrições{% endif %}
+        </div>
+    </div>
+
+    {% if inscricoes %}
+    <div class="bg-white rounded-2xl shadow-soft border border-gray-100 overflow-hidden">
+        <div class="divide-y divide-gray-100">
+            {% for i in inscricoes %}
+            <a href="{{ url_for('admin.inscricoes_ver', inscricao_id=i.id) }}"
+               class="block p-5 hover:bg-gray-50 transition">
+                <div class="flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-lacos-marinho rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {{ i.nome_associada[0]|upper }}
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <h3 class="text-lg font-bold text-gray-800">{{ i.nome_associada }}</h3>
+                            {% if i.clube_info %}
+                            <span class="inline-flex items-center px-2 py-0.5 bg-lacos-marinho-suave text-lacos-marinho text-xs font-bold rounded-full">
+                                {{ i.clube_info.nome }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-600 mb-1">
+                            <span>{{ i.data_nascimento.strftime('%d/%m/%Y') }}</span>
+                            {% if i.familia %}
+                            <span>·</span>
+                            <span><strong>Família:</strong> {{ i.familia.nome }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            Enviada em {{ i.criada_em.strftime('%d/%m/%Y às %H:%M') }}
+                            {% if i.atualizada_em != i.criada_em %}
+                                · Atualizada em {{ i.atualizada_em.strftime('%d/%m/%Y') }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex-shrink-0 hidden md:block">
+                        <span class="inline-flex items-center gap-1 px-3 py-2 text-sm text-lacos-marinho font-bold">
+                            Ver detalhes
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-2xl mb-4">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma inscrição encontrada</h3>
+        <p class="text-gray-600">
+            {% if filtro_clube %}
+                Nenhuma inscrição para esse clube.
+            {% else %}
+                Ainda não há inscrições enviadas pelas famílias.
+            {% endif %}
+        </p>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

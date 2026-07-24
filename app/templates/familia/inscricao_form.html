@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% if modo == 'criar' %}Nova Inscrição{% else %}Editar Inscrição{% endif %} — {{ candidata.nome }} | Laços
+{% endblock %}
+
+{% block content %}
+<section class="py-8 md:py-12 bg-gradient-to-b from-lacos-marinho-suave to-white min-h-[70vh]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {# BREADCRUMB #}
+        <nav class="mb-4">
+            <ol class="flex items-center gap-2 text-sm text-gray-500">
+                <li><a href="{{ url_for('familia.painel') }}" class="hover:text-lacos-marinho">Painel</a></li>
+                <li>/</li>
+                <li class="text-gray-800 font-semibold">
+                    {% if modo == 'criar' %}Nova Inscrição{% else %}Editar Inscrição{% endif %}
+                </li>
+            </ol>
+        </nav>
+
+        {# CABEÇALHO #}
+        <div class="mb-6">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
+                {% if modo == 'criar' %}
+                    Ficha de Inscrição
+                {% else %}
+                    Editar Inscrição
+                {% endif %}
+            </h1>
+            <p class="text-lg text-gray-600">
+                Candidata: <strong class="text-lacos-marinho">{{ candidata.nome }}</strong>
+                {% if candidata.idade %} · {{ candidata.idade }} anos{% endif %}
+            </p>
+        </div>
+
+        {# ALERTA INFORMATIVO #}
+        <div class="bg-lacos-azul-suave border border-lacos-azul/30 rounded-xl p-4 mb-6">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-lacos-azul-escuro flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"/>
+                </svg>
+                <div class="text-sm text-lacos-azul-escuro">
+                    <strong>Preenchimento cuidadoso:</strong> as informações desta ficha ajudam o clube a acompanhar sua filha da melhor forma. Você pode editá-las depois se necessário.
+                </div>
+            </div>
+        </div>
+
+        {# MENSAGENS FLASH #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 px-4 py-3 rounded-lg text-sm
+                        {% if category == 'erro' %}bg-lacos-vermelho-suave text-lacos-vermelho-escuro border border-lacos-vermelho/20
+                        {% elif category == 'sucesso' %}bg-lacos-verde-suave text-lacos-verde-escuro border border-lacos-verde/20
+                        {% else %}bg-lacos-azul-suave text-lacos-azul-escuro border border-lacos-azul/20
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {# FORMULÁRIO #}
+        <form method="POST" novalidate class="space-y-6">
+            {{ form.hidden_tag() }}
+
+            {# ============================ #}
+            {# SEÇÃO 1: DADOS DA ASSOCIADA  #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Dados da Associada</h2>
+                <p class="text-sm text-gray-500 mb-5">Informações sobre a candidata.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.nome_associada.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.nome_associada(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.nome_associada.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.data_nascimento.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.data_nascimento(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.data_nascimento.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.cpf_associada.label.text }}</label>
+                        {{ form.cpf_associada(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.cpf_associada.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.email.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.email(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.email.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.endereco.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.endereco(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.endereco.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 2: ESCOLARIDADE       #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Escolaridade</h2>
+                <p class="text-sm text-gray-500 mb-5">Onde a candidata estuda atualmente.</p>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ form.tipo_ensino.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                    <div class="space-y-2">
+                        {% for subfield in form.tipo_ensino %}
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-lacos-marinho-suave has-[:checked]:border-lacos-marinho transition">
+                            {{ subfield(class="w-4 h-4 text-lacos-marinho border-gray-300 focus:ring-lacos-marinho") }}
+                            <span class="text-sm font-semibold text-gray-800">{{ subfield.label.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% for e in form.tipo_ensino.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.nome_escola.label.text }}</label>
+                    {{ form.nome_escola(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                    <p class="mt-1 text-xs text-gray-500">Obrigatório se a candidata frequenta escola.</p>
+                    {% for e in form.nome_escola.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 3: DADOS DA MÃE       #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Dados da Mãe</h2>
+                <p class="text-sm text-gray-500 mb-5">Informações da mãe da candidata.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.nome_mae.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.nome_mae(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.nome_mae.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.data_nascimento_mae.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.data_nascimento_mae(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.data_nascimento_mae.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.profissao_mae.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.profissao_mae(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.profissao_mae.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.celular_mae.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.celular_mae(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.celular_mae.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.email_mae.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.email_mae(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.email_mae.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 4: DADOS DO PAI       #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Dados do Pai</h2>
+                <p class="text-sm text-gray-500 mb-5">Informações do pai da candidata.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.nome_pai.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.nome_pai(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.nome_pai.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.data_nascimento_pai.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.data_nascimento_pai(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.data_nascimento_pai.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.profissao_pai.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.profissao_pai(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.profissao_pai.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.celular_pai.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.celular_pai(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.celular_pai.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.email_pai.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.email_pai(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none") }}
+                        {% for e in form.email_pai.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 5: RESP. FINANCEIRO   #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Responsável Financeiro</h2>
+                <p class="text-sm text-gray-500 mb-5">Quem será o responsável pelas mensalidades e taxas.</p>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ form.responsavel_financeiro.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {% for subfield in form.responsavel_financeiro %}
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-lacos-marinho-suave has-[:checked]:border-lacos-marinho transition">
+                            {{ subfield(class="w-4 h-4 text-lacos-marinho border-gray-300 focus:ring-lacos-marinho") }}
+                            <span class="text-sm font-semibold text-gray-800">{{ subfield.label.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% for e in form.responsavel_financeiro.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.cpf_responsavel_financeiro.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                    {{ form.cpf_responsavel_financeiro(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                    <p class="mt-1 text-xs text-gray-500">Se o responsável for OUTRO, informe também nome completo e e-mail.</p>
+                    {% for e in form.cpf_responsavel_financeiro.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 6: CONTEXTO FAMILIAR  #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Contexto Familiar</h2>
+                <p class="text-sm text-gray-500 mb-5">Sobre a família e o dia a dia da candidata.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.como_conheceu.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.como_conheceu(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.como_conheceu.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.esportes_hobbies.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.esportes_hobbies(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.esportes_hobbies.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.situacao_pais.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.situacao_pais(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.situacao_pais.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.irmaos.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.irmaos(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.irmaos.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 7: PERSONALIDADE      #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Personalidade</h2>
+                <p class="text-sm text-gray-500 mb-5">Como ela é e o que gostariam de trabalhar.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.caracteristicas.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.caracteristicas(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.caracteristicas.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.pontos_a_trabalhar.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.pontos_a_trabalhar(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.pontos_a_trabalhar.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 8: SAÚDE              #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Saúde</h2>
+                <p class="text-sm text-gray-500 mb-5">Informações importantes para o bem-estar da candidata.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.alergias.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.alergias(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.alergias.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.medicamento_administrado.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                        {{ form.medicamento_administrado(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none resize-y") }}
+                        {% for e in form.medicamento_administrado.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 9: AUTORIZAÇÕES       #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Autorizações</h2>
+                <p class="text-sm text-gray-500 mb-5">Consentimentos formais.</p>
+
+                {# Interesse doutrina #}
+                <div class="mb-5 p-4 border border-gray-200 rounded-xl">
+                    <p class="text-sm font-bold text-gray-800 mb-3">{{ form.interesse_doutrina.label.text }} <span class="text-lacos-vermelho">*</span></p>
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for subfield in form.interesse_doutrina %}
+                        <label class="flex items-center justify-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-lacos-marinho-suave has-[:checked]:border-lacos-marinho transition">
+                            {{ subfield(class="w-4 h-4 text-lacos-marinho border-gray-300 focus:ring-lacos-marinho") }}
+                            <span class="text-sm font-semibold text-gray-800">{{ subfield.label.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% for e in form.interesse_doutrina.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+
+                {# Ciente regimento #}
+                <div class="mb-5 p-4 border border-gray-200 rounded-xl">
+                    <p class="text-sm font-bold text-gray-800 mb-3">{{ form.ciente_regimento.label.text }} <span class="text-lacos-vermelho">*</span></p>
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for subfield in form.ciente_regimento %}
+                        <label class="flex items-center justify-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-lacos-marinho-suave has-[:checked]:border-lacos-marinho transition">
+                            {{ subfield(class="w-4 h-4 text-lacos-marinho border-gray-300 focus:ring-lacos-marinho") }}
+                            <span class="text-sm font-semibold text-gray-800">{{ subfield.label.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% for e in form.ciente_regimento.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+
+                {# Autoriza imagem — bloco maior com texto legal #}
+                <div class="p-4 border border-gray-200 rounded-xl">
+                    <p class="text-sm text-gray-700 mb-3 leading-relaxed">
+                        Neste ato, os responsáveis autorizam a publicação e a utilização, sem fins lucrativos, da imagem, do nome e da voz da associada, para os fins próprios do clube e para as atividades por ele organizadas, bem como nas suas publicações, sites, vídeos e demais materiais próprios.
+                    </p>
+                    <p class="text-sm font-bold text-gray-800 mb-3">{{ form.autoriza_imagem.label.text }} <span class="text-lacos-vermelho">*</span></p>
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for subfield in form.autoriza_imagem %}
+                        <label class="flex items-center justify-center gap-2 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-lacos-marinho-suave has-[:checked]:border-lacos-marinho transition">
+                            {{ subfield(class="w-4 h-4 text-lacos-marinho border-gray-300 focus:ring-lacos-marinho") }}
+                            <span class="text-sm font-semibold text-gray-800">{{ subfield.label.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% for e in form.autoriza_imagem.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# SEÇÃO 10: CLUBE ESCOLHIDO   #}
+            {# ============================ #}
+            <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-7">
+                <h2 class="text-lg font-extrabold text-gray-800 mb-1">Clube Escolhido</h2>
+                <p class="text-sm text-gray-500 mb-5">Em qual clube da Laços a candidata está sendo inscrita.</p>
+
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1.5">{{ form.clube_slug.label.text }} <span class="text-lacos-vermelho">*</span></label>
+                    {{ form.clube_slug(class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none bg-white") }}
+                    {% for e in form.clube_slug.errors %}<p class="mt-1 text-sm text-lacos-vermelho">{{ e }}</p>{% endfor %}
+                </div>
+            </div>
+
+            {# ============================ #}
+            {# BOTÕES FINAIS               #}
+            {# ============================ #}
+            <div class="flex flex-col-reverse sm:flex-row gap-3 pt-2">
+                <a href="{{ url_for('familia.painel') }}"
+                   class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition">
+                    Cancelar
+                </a>
+                {{ form.submit(class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-8 py-3 bg-lacos-marinho text-white rounded-lg font-bold hover:bg-lacos-marinho-claro transition shadow-soft cursor-pointer text-base") }}
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
