@@ -49,6 +49,7 @@ CLUBES = [
             "Formação para os pais",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/sndfFLpaKUX1V5ZV7",
         "ativo": True,
     },
     {
@@ -88,6 +89,7 @@ CLUBES = [
             "Formação para os pais",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://docs.google.com/forms/d/e/1FAIpQLSfwTgDPLTJVJguufXAeh6_v3DVtaIkp4ppjQPmfYwwj4iA_NQ/viewform",
         "ativo": True,
     },
     {
@@ -129,6 +131,7 @@ CLUBES = [
             "Formação para os pais",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/btmZPBLkJnkTvRQp9",
         "ativo": True,
     },
     {
@@ -155,6 +158,7 @@ CLUBES = [
         "monitora": None,
         "atividades_oferecidas": [],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/sndfFLpaKUX1V5ZV7",  # TODO: aguardando link definitivo
         "ativo": True,
     },
     {
@@ -190,6 +194,7 @@ CLUBES = [
             "Organização dos estudos",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://docs.google.com/forms/d/e/1FAIpQLSeq580MdByC4ExVY50Wj88iKhVuxHwiRzfG9ZtF3-PppgZR_g/viewform",
         "ativo": True,
     },
     {
@@ -228,6 +233,7 @@ CLUBES = [
             "Aula de doutrina católica",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://docs.google.com/forms/d/e/1FAIpQLSd5PC9lyxRoC7F3-ThJPiIBsLo8o8c_Eo3kcA8HY_mIuXGmGQ/viewform",
         "ativo": True,
     },
     {
@@ -270,6 +276,7 @@ CLUBES = [
             "Formação para os pais",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/sndfFLpaKUX1V5ZV7",  # TODO: aguardando link definitivo
         "ativo": True,
     },
 
@@ -311,6 +318,7 @@ CLUBES = [
             "Formação espiritual",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/sndfFLpaKUX1V5ZV7",  # TODO: aguardando link definitivo
         "ativo": True,
     },
     {
@@ -349,6 +357,7 @@ CLUBES = [
             "Confissão",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://docs.google.com/forms/d/e/1FAIpQLScrqO82mwwWch2ULDfdJlFoGxheLCJn0lEwCK432BV6ab4r4Q/viewform",
         "ativo": True,
     },
     {
@@ -388,6 +397,7 @@ CLUBES = [
             "Moda e comportamento",
         ],
         "link_inscricao": "#",
+        "link_pre_inscricao": "https://forms.gle/6PSJnYamiE1YHpog7",
         "ativo": True,
     },
 ]
