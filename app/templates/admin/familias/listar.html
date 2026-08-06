@@ -44,9 +44,9 @@
             {% if current_user.is_admin_clube() %}
                 Famílias do seu clube.
             {% elif filtro_clube == 'sem_candidatas' %}
-                Famílias sem candidatas cadastradas.
+                Famílias sem associadas cadastradas.
             {% elif clube_filtrado_info %}
-                Famílias com candidatas no <strong class="text-lacos-marinho">Clube {{ clube_filtrado_info.nome }}</strong>.
+                Famílias com associadas no <strong class="text-lacos-marinho">Clube {{ clube_filtrado_info.nome }}</strong>.
             {% else %}
                 Todas as famílias cadastradas.
             {% endif %}
@@ -73,7 +73,7 @@
                 class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-lacos-marinho focus:border-lacos-marinho transition outline-none bg-white">
             <option value="">Todos os clubes</option>
             <option value="sem_candidatas" {% if filtro_clube == 'sem_candidatas' %}selected{% endif %}>
-                — Sem candidatas —
+                — Sem associadas —
             </option>
             <optgroup label="Clubes">
                 {% for clube in clubes_disponiveis %}
@@ -148,12 +148,12 @@
                         </div>
                         <div class="text-sm text-gray-700">
                             {% if f.candidatas_visiveis %}
-                                <strong>Candidatas:</strong>
+                                <strong>Associadas:</strong>
                                 {% for c in f.candidatas_visiveis %}
                                     {{ c.nome }}{% if c.idade %} ({{ c.idade }}){% endif %}{% if not loop.last %}, {% endif %}
                                 {% endfor %}
                             {% else %}
-                                <span class="text-gray-400 italic">Sem candidatas cadastradas</span>
+                                <span class="text-gray-400 italic">Sem associadas cadastradas</span>
                             {% endif %}
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
                             </svg>
-                            <span class="hidden sm:inline">Candidatas ({{ f.candidatas_visiveis|length }})</span>
+                            <span class="hidden sm:inline">Associadas ({{ f.candidatas_visiveis|length }})</span>
                             <span class="sm:hidden">{{ f.candidatas_visiveis|length }}</span>
                         </a>
                         <a href="{{ url_for('admin.familias_editar', familia_id=f.id) }}"

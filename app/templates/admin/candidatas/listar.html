@@ -37,7 +37,7 @@
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Candidatas</h1>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-1">Associadas</h1>
             <p class="text-gray-600">Filhas da família <strong>{{ familia.nome }}</strong> ({{ familia.email }})</p>
         </div>
         <a href="{{ url_for('admin.candidatas_criar', familia_id=familia.id) }}"
@@ -45,7 +45,7 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
-            Adicionar Candidata
+            Adicionar Associada
         </a>
     </div>
 
@@ -98,11 +98,11 @@
     </div>
     {% else %}
     <div class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
-        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma candidata cadastrada</h3>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Nenhuma associada cadastrada</h3>
         <p class="text-gray-600 mb-6">Adicione a primeira filha dessa família.</p>
         <a href="{{ url_for('admin.candidatas_criar', familia_id=familia.id) }}"
            class="inline-flex items-center justify-center gap-2 bg-lacos-marinho text-white px-6 py-3 rounded-lg font-bold hover:bg-lacos-marinho-claro transition">
-            Adicionar Candidata
+            Adicionar Associada
         </a>
     </div>
     {% endif %}
