@@ -17,6 +17,7 @@ from app.data.clubes_data import get_todos_clubes, get_clube_por_slug
 from app.utils.decorators import admin_required
 
 
+
 def _pode_ver_inscricao(inscricao):
     """
     admin_geral vê qualquer inscrição.
