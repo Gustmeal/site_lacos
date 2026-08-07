@@ -128,7 +128,7 @@
             </div>
             {% elif imagem_capa and imagem_capa.tipo == 'foto' %}
             <!-- Quando tem foto de fundo, mostramos o LOGO sobreposto (se existir) -->
-            {% set logo_path = 'img/clubes/' ~ clube.slug ~ '.png' %}
+            {% set logo_path = get_logo_clube(clube.slug) or ('img/clubes/' ~ clube.slug ~ '.png') %}
             <div class="md:col-span-4 flex justify-center md:justify-end">
                 <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-6 border border-white/20 shadow-soft-lg">
                     <img src="{{ url_for('static', filename=logo_path) }}"

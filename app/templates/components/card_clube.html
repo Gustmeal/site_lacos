@@ -13,7 +13,7 @@ COMPONENTE: Card de Clube
 
         {# Tenta foto da subpasta primeiro #}
         {% set foto_capa = 'img/clubes/' ~ clube.slug ~ '/01.jpg' %}
-        {% set logo_path = 'img/clubes/' ~ clube.slug ~ '.png' %}
+        {% set logo_path = get_logo_clube(clube.slug) or ('img/clubes/' ~ clube.slug ~ '.png') %}
 
         <!-- Logo (padrão visual) -->
         <img src="{{ url_for('static', filename=logo_path) }}"

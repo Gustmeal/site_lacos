@@ -490,19 +490,23 @@ def get_fotos_clube(slug):
 
 def get_logo_clube(slug):
     """
-    Retorna o caminho do logo PNG do clube, se existir.
-    Estrutura: app/static/img/clubes/<slug>.png
+    Retorna o caminho do logo do clube, se existir.
+    Procura primeiro por .webp (mais leve), depois por .png (fallback).
+    Estrutura: app/static/img/clubes/<slug>.webp ou <slug>.png
     """
     try:
-        caminho_arquivo = os.path.join(
-            current_app.static_folder,
-            "img",
-            "clubes",
-            f"{slug}.png",
-        )
+        extensoes_prioridade = ["webp", "png"]
 
-        if os.path.isfile(caminho_arquivo):
-            return f"img/clubes/{slug}.png"
+        for ext in extensoes_prioridade:
+            caminho_arquivo = os.path.join(
+                current_app.static_folder,
+                "img",
+                "clubes",
+                f"{slug}.{ext}",
+            )
+
+            if os.path.isfile(caminho_arquivo):
+                return f"img/clubes/{slug}.{ext}"
 
         return None
     except Exception:

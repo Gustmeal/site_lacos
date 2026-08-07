@@ -75,6 +75,14 @@ def create_app(config_name=None):
     # Registra handlers de erro
     _register_error_handlers(app)
 
+    # ==========================================
+    # FUNÇÕES GLOBAIS DO JINJA
+    # ==========================================
+    # Disponibiliza get_logo_clube() dentro dos templates,
+    # permitindo que ela decida dinamicamente entre .webp e .png
+    from app.data.clubes_data import get_logo_clube
+    app.jinja_env.globals["get_logo_clube"] = get_logo_clube
+
     @app.route("/health")
     def health():
         """Endpoint para monitoramento (verifica se a app está viva)."""
