@@ -1,1 +1,1 @@
-web: python -c "from app import create_app, db; app = create_app(); ctx = app.app_context(); ctx.push(); db.create_all(); print('Tabelas criadas!')" && python -m flask db stamp head && gunicorn run:app
+web: python -m flask db upgrade && gunicorn run:app
