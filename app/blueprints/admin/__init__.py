@@ -1,5 +1,5 @@
 """
-Blueprint administrativo do Site Laços.
+Blueprint administrativo do Site Laços. teste deploy
 """
 
 from flask import Blueprint
