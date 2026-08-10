@@ -205,3 +205,12 @@ def clube_detalhe(slug):
         outros_clubes=outros_clubes,
         form=form,
     )
+
+@public_bp.route("/termos-de-uso")
+def termos_de_uso():
+    return render_template("pages/termos_de_uso.html")
+
+
+@public_bp.route("/politica-de-privacidade")
+def politica_privacidade():
+    return render_template("pages/politica_privacidade.html")
