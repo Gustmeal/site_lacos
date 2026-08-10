@@ -214,3 +214,7 @@ def termos_de_uso():
 @public_bp.route("/politica-de-privacidade")
 def politica_privacidade():
     return render_template("pages/politica_privacidade.html")
+
+@public_bp.route("/contato")
+def contato():
+    return render_template("pages/contato.html")
