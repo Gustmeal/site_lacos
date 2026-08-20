@@ -28,7 +28,7 @@ CLUBES = [
         "descricao_curta": "O primeiro clube de Brasília, hoje um dos maiores do Brasil.",
         "descricao": (
             "O Clube Caliandra, localizado no bairro Lago Sul, foi o primeiro de Brasília, "
-            "mas recebeu este nome em 2006. Tornou-se um dos maiores clube do Brasil, "
+            "mas recebeu este nome em 2006. Tornou-se um dos maiores clubes do Brasil, "
             "com um total de 40 associadas, de 5 a 10 anos."
         ),
         "diretora": "Fernanda Godinho",
@@ -291,13 +291,13 @@ CLUBES = [
         "destaque": True,
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
-        "idades": "11 a 17 anos",
+        "idades": "10 a 14 anos",
         "total_associadas": 47,
         "funcionamento": "Sábado, das 9h30 às 12h",
         "descricao_curta": "Maior clube juvenil da Asa Sul, com 47 jovens em formação.",
         "descricao": (
             "O Clube Andorinha, localizado em Brasília, é um dos maiores clubes juvenis da "
-            "Associação Laços, atendendo 47 jovens de 11 a 17 anos. Oferece um amplo leque "
+            "Associação Laços, atendendo 47 jovens de 10 a 14 anos. Oferece um amplo leque "
             "de atividades culturais, artísticas e práticas, sempre com foco na formação "
             "integral das associadas."
         ),
@@ -331,13 +331,13 @@ CLUBES = [
         "destaque": True,
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
-        "idades": "11 a 17 anos",
+        "idades": "10 a 14 anos",
         "total_associadas": 32,
         "funcionamento": "Sábado, das 9h às 11h30",
         "descricao_curta": "Clube juvenil do Park Way com 32 associadas em formação integral.",
         "descricao": (
             "O Clube Magnólia, localizado no Park Way de Águas Claras, atende 32 jovens "
-            "de 11 a 17 anos. Oferece atividades culturais, artísticas e de formação "
+            "de 10 a 14 anos. Oferece atividades culturais, artísticas e de formação "
             "espiritual, com acompanhamento de sacerdote e momentos de meditação."
         ),
         "diretora": "Fernanda Andrade",
@@ -370,13 +370,13 @@ CLUBES = [
         "destaque": True,
         "cor_tema": "lacos-marinho",
         "fundado_em": None,
-        "idades": "11 a 17 anos",
+        "idades": "10 a 14 anos",
         "total_associadas": 30,
         "funcionamento": "Sábado, das 9h30 às 12h15",
         "descricao_curta": "Clube juvenil do Lago Sul com formação espiritual e prática.",
         "descricao": (
-            "O Clube Juvenil Orquídea, localizado no Lago Sul, atende 30 jovens de 11 a "
-            "17 anos. Oferece formação aprofundada com atendimento e meditação com o "
+            "O Clube Juvenil Orquídea, localizado no Lago Sul, atende 30 jovens de 10 a "
+            "14 anos. Oferece formação aprofundada com atendimento e meditação com o "
             "Padre Jorge, clube de leitura, formação para os pais e aulas práticas que "
             "vão de culinária a moda e comportamento."
         ),

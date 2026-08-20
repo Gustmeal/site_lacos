@@ -11,15 +11,17 @@
 <section class="relative bg-lacos-marinho text-white overflow-hidden">
 
     {% if imagem_capa and imagem_capa.tipo == 'foto' %}
-    <!-- FOTO de fundo (clubes com fotos) -->
+    <!-- FOTO de fundo NÍTIDA (clubes com fotos) -->
     <div class="absolute inset-0">
         <img src="{{ url_for('static', filename=imagem_capa.caminho) }}"
              alt="Clube {{ clube.nome }}"
-             class="w-full h-full object-cover opacity-25">
+             class="w-full h-full object-cover">
     </div>
-    {% endif %}
-
-    <!-- Padrão decorativo -->
+    <!-- Sombra suave só na base e à esquerda, para garantir a leitura do texto branco -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
+    {% else %}
+    <!-- Fundo marinho + padrão decorativo (clubes sem foto, só logo) -->
     <div class="absolute inset-0 bg-gradient-to-br from-lacos-marinho/95 via-lacos-marinho/85 to-lacos-marinho-claro/90"></div>
     <div class="absolute inset-0 opacity-[0.08]">
         <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
@@ -29,6 +31,7 @@
             <rect width="200" height="200" fill="url(#clubeBannerDots)"/>
         </svg>
     </div>
+    {% endif %}
 
     <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
 
@@ -321,6 +324,37 @@
     </div>
 </section>
 {% endif %}
+{% endif %}
+
+<!-- ============================================
+     3.5. FORMAÇÃO NOS CLUBES JUVENIS (só juvenis)
+     ============================================ -->
+{% if clube.categoria == 'juvenil' %}
+<section class="py-16 md:py-24 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="inline-block px-4 py-1.5 bg-lacos-marinho-suave text-lacos-marinho rounded-full text-sm font-bold mb-4">
+                Formação
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
+                Formação Integral das Jovens
+            </h2>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-soft border border-gray-100 p-6 md:p-10 space-y-5 text-gray-700 leading-relaxed text-lg">
+            <p>
+                Nos clubes juvenis, cada atividade tem um objetivo específico. Muito além do aprendizado prático e do lazer, todas elas contribuem para o fortalecimento da personalidade, o desenvolvimento da autonomia e a melhoria contínua do relacionamento interpessoal das jovens.
+            </p>
+            <p>
+                A formação cristã é uma grande aliada nesse processo de amadurecimento integral. Para isso, contamos com o apoio do <a href="https://opusdei.org/pt-br/" target="_blank" rel="noopener noreferrer" class="text-lacos-marinho font-semibold hover:underline">Opus Dei</a>, uma instituição da Igreja Católica, que nos auxilia na transmissão de valores e na busca por um sentido transcendente na vida diária — ajudando cada jovem a encontrar seu propósito e a transformar o cotidiano em uma oportunidade de serviço e de crescimento pessoal.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Trabalho das virtudes — juvenis -->
+{% include 'components/clube_virtudes_juvenil.html' %}
 {% endif %}
 
 <!-- ============================================
