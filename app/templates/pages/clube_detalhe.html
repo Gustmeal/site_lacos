@@ -92,7 +92,7 @@
                     {% if clube.total_associadas %}
                     <div class="flex items-center gap-2">
                         <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/>
                         </svg>
                         <span>{{ clube.total_associadas }} associadas</span>
                     </div>
@@ -223,7 +223,7 @@
 <!-- ============================================
      3. EQUIPE DO CLUBE
      ============================================ -->
-{% if clube.diretora or clube.vice_diretora or clube.secretaria or clube.monitora %}
+{% if clube.diretora or clube.vice_diretora or clube.secretaria or clube.monitora or clube.preceptora %}
 <section class="py-16 md:py-20 bg-gray-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -239,10 +239,10 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-4 md:gap-6 max-w-5xl mx-auto">
 
             {% if clube.diretora %}
-            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center w-[calc(50%-0.5rem)] md:w-44">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-marinho text-white rounded-full text-2xl font-extrabold mb-3">
                     {{ clube.diretora[0]|upper }}
                 </div>
@@ -252,32 +252,42 @@
             {% endif %}
 
             {% if clube.vice_diretora %}
-            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center w-[calc(50%-0.5rem)] md:w-44">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-azul text-white rounded-full text-2xl font-extrabold mb-3">
                     {{ clube.vice_diretora[0]|upper }}
                 </div>
-                <div class="text-xs uppercase font-bold text-lacos-azul mb-1">Vice-diretora</div>
+                <div class="text-xs uppercase font-bold text-lacos-azul mb-1">{{ 'Vice-diretoras' if ' e ' in clube.vice_diretora else 'Vice-diretora' }}</div>
                 <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.vice_diretora }}</div>
             </div>
             {% endif %}
 
             {% if clube.secretaria %}
-            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center w-[calc(50%-0.5rem)] md:w-44">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-verde text-white rounded-full text-2xl font-extrabold mb-3">
                     {{ clube.secretaria[0]|upper }}
                 </div>
-                <div class="text-xs uppercase font-bold text-lacos-verde-escuro mb-1">Secretaria</div>
+                <div class="text-xs uppercase font-bold text-lacos-verde-escuro mb-1">{{ 'Secretárias' if ' e ' in clube.secretaria else 'Secretária' }}</div>
                 <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.secretaria }}</div>
             </div>
             {% endif %}
 
             {% if clube.monitora %}
-            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center w-[calc(50%-0.5rem)] md:w-44">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-vermelho text-white rounded-full text-2xl font-extrabold mb-3">
                     {{ clube.monitora[0]|upper }}
                 </div>
                 <div class="text-xs uppercase font-bold text-lacos-vermelho-escuro mb-1">Monitora</div>
                 <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.monitora }}</div>
+            </div>
+            {% endif %}
+
+            {% if clube.preceptora %}
+            <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center w-[calc(50%-0.5rem)] md:w-44">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-lacos-amarelo-escuro text-white rounded-full text-2xl font-extrabold mb-3">
+                    {{ clube.preceptora[0]|upper }}
+                </div>
+                <div class="text-xs uppercase font-bold text-lacos-amarelo-escuro mb-1">Preceptora</div>
+                <div class="font-bold text-gray-800 text-sm leading-tight">{{ clube.preceptora }}</div>
             </div>
             {% endif %}
         </div>

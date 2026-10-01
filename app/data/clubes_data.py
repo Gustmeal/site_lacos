@@ -32,9 +32,10 @@ CLUBES = [
             "com um total de 40 associadas, de 5 a 10 anos."
         ),
         "diretora": "Fernanda Godinho",
-        "vice_diretora": "Valessa Tokarski",
-        "secretaria": "Rosana Macedo",
+        "vice_diretora": "Ligia Badauy e Alhandra",
+        "secretaria": "Rosana Macedo e Danielle Jarjour",
         "monitora": "Rafaela Teixeira",
+        "preceptora": "Ana Luiza Costa",
         "atividades_oferecidas": [
             "Clube de leitura",
             "Aula de doutrina",
@@ -318,7 +319,7 @@ CLUBES = [
             "Formação espiritual",
         ],
         "link_inscricao": "#",
-        "link_pre_inscricao": "https://forms.gle/sndfFLpaKUX1V5ZV7",  # TODO: aguardando link definitivo
+        "link_pre_inscricao": "https://docs.google.com/forms/d/e/1FAIpQLScWs0bGL2EpiZ2AADVjp_IIYnb3iRPGkDZ7KPkF_C4r4-ILJQ/viewform",  # TODO: aguardando link definitivo
         "ativo": True,
     },
     {
