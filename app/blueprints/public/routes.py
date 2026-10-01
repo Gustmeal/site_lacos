@@ -218,3 +218,59 @@ def politica_privacidade():
 @public_bp.route("/contato")
 def contato():
     return render_template("pages/contato.html")
+
+
+# ============================================
+# SEO: sitemap.xml e robots.txt
+# ============================================
+SITE_URL = "https://www.lacos.org.br"
+
+
+@public_bp.route("/sitemap.xml")
+def sitemap():
+    """Lista as páginas públicas para o Google indexar."""
+    from flask import Response
+    from app.data.clubes_data import get_todos_clubes
+
+    urls = [
+        (url_for("public.home"), "1.0"),
+        (url_for("public.quem_somos"), "0.9"),
+        (url_for("public.clubes_lista"), "0.9"),
+        (url_for("public.atividades"), "0.7"),
+        (url_for("public.eventos_lista"), "0.7"),
+        (url_for("public.contato"), "0.6"),
+        (url_for("public.termos_de_uso"), "0.3"),
+        (url_for("public.politica_privacidade"), "0.3"),
+    ]
+    for clube in get_todos_clubes():
+        urls.append((url_for("public.clube_detalhe", slug=clube["slug"]), "0.8"))
+    for evento in Evento.query.filter_by(publicado=True).all():
+        urls.append((url_for("public.evento_detalhe", slug=evento.slug), "0.5"))
+
+    itens = "".join(
+        f"<url><loc>{SITE_URL}{loc}</loc><priority>{prio}</priority></url>"
+        for loc, prio in urls
+    )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"{itens}</urlset>"
+    )
+    return Response(xml, mimetype="application/xml")
+
+
+@public_bp.route("/robots.txt")
+def robots():
+    """Libera o site para buscadores e bloqueia as áreas restritas."""
+    from flask import Response
+
+    conteudo = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        "Disallow: /admin/\n"
+        "Disallow: /familia/\n"
+        "Disallow: /setup/\n"
+        "Disallow: /login\n"
+        f"Sitemap: {SITE_URL}/sitemap.xml\n"
+    )
+    return Response(conteudo, mimetype="text/plain")
