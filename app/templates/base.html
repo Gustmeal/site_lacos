@@ -15,17 +15,20 @@
     <meta property="og:site_name" content="Associação Laços">
     <meta property="og:title" content="{% block og_title %}Associação Laços - Clubes de Brasília{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Conhecimento, comunidade e crescimento para crianças e jovens de Brasília.{% endblock %}">
-    <meta property="og:image" content="{{ url_for('static', filename='img/og-image.png', _external=True) }}">
+    <meta property="og:image" content="https://www.lacos.org.br/static/img/og-image.png?v=2">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:url" content="https://www.lacos.org.br{{ request.path }}">
+    <meta property="og:image:secure_url" content="https://www.lacos.org.br/static/img/og-image.png?v=2">
+    <meta property="og:image:type" content="image/png">
+    <link rel="canonical" href="https://www.lacos.org.br{{ request.path }}">
     <meta property="og:locale" content="pt_BR">
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Associação Laços - Clubes de Brasília">
     <meta name="twitter:description" content="Conhecimento, comunidade e crescimento para crianças e jovens de Brasília.">
-    <meta name="twitter:image" content="{{ url_for('static', filename='img/og-image.png', _external=True) }}">
+    <meta name="twitter:image" content="https://www.lacos.org.br/static/img/og-image.png?v=2">
 
     <!-- Cor do tema (barra do navegador no celular) -->
     <meta name="theme-color" content="#041162">
