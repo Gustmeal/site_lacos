@@ -337,9 +337,10 @@ CLUBES = [
         "funcionamento": "Sábado, das 9h às 11h30",
         "descricao_curta": "Clube juvenil do Park Way com 32 associadas em formação integral.",
         "descricao": (
-            "O Clube Magnólia, localizado no Park Way de Águas Claras, atende 32 jovens "
-            "de 10 a 14 anos. Oferece atividades culturais, artísticas e de formação "
-            "espiritual, com acompanhamento de sacerdote e momentos de meditação."
+            "O Clube Magnólia, localizado no Park Way de Águas Claras,é um dos maiores clubes juvenis da "
+            "Associação Laços, atendendo 32 jovens de 10 a 14 anos. Oferece um amplo leque "
+            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
+            "integral das associadas."
         ),
         "diretora": "Fernanda Andrade",
         "vice_diretora": "Alessandra Navarrete",
@@ -376,10 +377,10 @@ CLUBES = [
         "funcionamento": "Sábado, das 9h30 às 12h15",
         "descricao_curta": "Clube juvenil do Lago Sul com formação espiritual e prática.",
         "descricao": (
-            "O Clube Juvenil Orquídea, localizado no Lago Sul, atende 30 jovens de 10 a "
-            "14 anos. Oferece formação aprofundada com atendimento e meditação com o "
-            "Padre Jorge, clube de leitura, formação para os pais e aulas práticas que "
-            "vão de culinária a moda e comportamento."
+            "O Clube Juvenil Orquídea, localizado no Lago Sul, é um dos maiores clubes juvenis da "
+            "Associação Laços, atendendo 30 jovens de 10 a 14 anos. Oferece um amplo leque "
+            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
+            "integral das associadas."
         ),
         "diretora": "Patrícia Tusco",
         "vice_diretora": "Leslie Alves",
