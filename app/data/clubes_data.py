@@ -297,10 +297,12 @@ CLUBES = [
         "funcionamento": "Sábado, das 9h30 às 12h",
         "descricao_curta": "Maior clube juvenil da Asa Sul, com 47 jovens em formação.",
         "descricao": (
-            "O Clube Andorinha, localizado em Brasília, é um dos maiores clubes juvenis da "
-            "Associação Laços, atendendo 47 jovens de 10 a 14 anos. Oferece um amplo leque "
-            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
-            "integral das associadas."
+            "O Clube Juvenil Andorinha, localizado na Asa Sul, nasceu como Caliandra "
+            "Juvenil e foi o primeiro clube juvenil de Brasília. Hoje, reúne o maior número "
+            "de associadas entre os clubes juvenis da Associação Laços. Por meio de "
+            "atividades culturais, artísticas e práticas, promove o desenvolvimento das "
+            "virtudes, a construção de amizades e o amadurecimento das jovens, ajudando-as "
+            "a crescer em autonomia, responsabilidade e generosidade."
         ),
         "diretora": "Emanuelle Dias Weiler Soares",
         "vice_diretora": "Valessa Freiberger Tokarski Solino",
@@ -337,10 +339,12 @@ CLUBES = [
         "funcionamento": "Sábado, das 9h às 11h30",
         "descricao_curta": "Clube juvenil do Park Way com 32 associadas em formação integral.",
         "descricao": (
-            "O Clube Magnólia, localizado no Park Way de Águas Claras,é um dos maiores clubes juvenis da "
-            "Associação Laços, atendendo 32 jovens de 10 a 14 anos. Oferece um amplo leque "
-            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
-            "integral das associadas."
+            "O Clube Juvenil Magnólia integra a Associação Laços e oferece às jovens um "
+            "espaço de amizade, aprendizado e crescimento pessoal. Suas atividades "
+            "culturais, artísticas e práticas unem o desenvolvimento de habilidades à "
+            "formação nas virtudes, incentivando cada associada a conhecer melhor a si "
+            "mesma, assumir responsabilidades e contribuir com a família e com as pessoas "
+            "ao seu redor."
         ),
         "diretora": "Fernanda Andrade",
         "vice_diretora": "Alessandra Navarrete",
@@ -377,10 +381,12 @@ CLUBES = [
         "funcionamento": "Sábado, das 9h30 às 12h15",
         "descricao_curta": "Clube juvenil do Lago Sul com formação espiritual e prática.",
         "descricao": (
-            "O Clube Juvenil Orquídea, localizado no Lago Sul, é um dos maiores clubes juvenis da "
-            "Associação Laços, atendendo 30 jovens de 10 a 14 anos. Oferece um amplo leque "
-            "de atividades culturais, artísticas e práticas, sempre com foco na formação "
-            "integral das associadas."
+            "O Clube Juvenil Orquídea, localizado no Lago Sul, integra a Associação Laços e "
+            "acolhe jovens de 10 a 14 anos em um ambiente de amizade e formação. Por meio "
+            "de atividades culturais, artísticas e práticas, ajuda as associadas a "
+            "desenvolver suas capacidades e cultivar virtudes, crescendo em autonomia, "
+            "aprendendo a fazer boas escolhas e descobrindo a alegria de contribuir com os "
+            "outros."
         ),
         "diretora": "Patrícia Tusco",
         "vice_diretora": "Leslie Alves",
