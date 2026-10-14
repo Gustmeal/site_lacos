@@ -597,7 +597,7 @@
 
         <div class="text-center max-w-2xl mx-auto mb-10">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-3">
-                Conheça outros clubes {{ clube.categoria_label|lower }}s
+                Conheça outros clubes {{ 'juvenis' if clube.categoria == 'juvenil' else 'infantis' }}
             </h2>
             <p class="text-gray-600">
                 Veja outras opções da nossa associação na sua região.
