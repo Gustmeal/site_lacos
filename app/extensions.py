@@ -60,8 +60,11 @@ mail = Mail()
 # Proteção CSRF
 csrf = CSRFProtect()
 
-# Rate limiting (proteção contra spam/brute force)
+# Rate limiting (proteção contra brute force)
+# Sem limite global: cada página carrega dezenas de arquivos (fotos, CSS, JS),
+# e um limite geral bloqueava visitantes comuns ("Too Many Requests").
+# Os limites ficam só nas rotas sensíveis: login e setup.
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
+    default_limits=[],
 )
