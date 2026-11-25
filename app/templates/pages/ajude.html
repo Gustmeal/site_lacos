@@ -42,10 +42,14 @@
      HERO
      ============================================ -->
 <section class="relative text-white overflow-hidden">
-    <img src="{{ url_for('static', filename='img/banner-home.webp') }}"
+    <img src="{{ url_for('static', filename='img/banner-ajude.webp') }}"
          alt="Associadas, monitoras e famílias da Laços reunidas"
-         class="absolute inset-0 w-full h-full object-cover">
-    <div class="absolute inset-0 bg-gradient-to-r from-lacos-marinho via-lacos-marinho/85 to-lacos-marinho/40"></div>
+         class="absolute inset-0 w-full h-full object-cover object-[center_65%]"
+         loading="eager" fetchpriority="high">
+    <!-- Escurecimento neutro sutil, igual ao banner da home (sem tingir a foto de azul) -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/45"></div>
+    <!-- Sombra preta só do lado do texto, para leitura (a foto continua com as cores naturais) -->
+    <div class="absolute inset-0 bg-black/25 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:via-black/25 md:to-transparent"></div>
 
     <!-- Fitas coloridas da marca -->
     <svg class="absolute -right-24 -bottom-10 w-[620px] max-w-none opacity-90 hidden md:block" viewBox="0 0 600 400" fill="none" aria-hidden="true">
@@ -55,16 +59,16 @@
         <path class="fita fita-4" d="M-10 420 C160 270, 320 440, 390 330 S 550 210, 620 310" stroke="#FFBC3A" stroke-width="10" stroke-linecap="round"/>
     </svg>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
         <div class="max-w-2xl">
             <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/15 backdrop-blur-sm rounded-full text-sm font-bold mb-6 border border-white/20">
                 <svg class="w-4 h-4 text-lacos-amarelo" fill="currentColor" viewBox="0 0 24 24"><path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"/></svg>
                 Ajude a Laços
             </span>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]">
                 Cada menina merece um lugar para <span class="text-lacos-amarelo">crescer</span>
             </h1>
-            <p class="text-lg md:text-xl text-white/90 leading-relaxed mb-10">
+            <p class="text-lg md:text-xl text-white leading-relaxed mb-10 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
                 Há anos, famílias de Brasília constroem juntas os clubes da Laços: espaços de amizade, virtudes e alegria para meninas e jovens. Com a sua ajuda, esse trabalho chega a mais famílias.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
