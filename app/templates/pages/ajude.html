@@ -35,70 +35,32 @@
 {% block content %}
 
 <!-- ============================================
-     HERO (mesmo formato do banner da home)
+     ABERTURA DA PÁGINA (sem foto, para não parecer a home)
      ============================================ -->
-<section class="relative text-white overflow-hidden">
-
-    <!-- Imagem de fundo -->
-    <div class="absolute inset-0 z-0">
-        <img src="{{ url_for('static', filename='img/banner-ajude.webp') }}"
-             alt="Associadas, monitoras e famílias da Laços reunidas"
-             class="w-full h-full object-cover"
-             loading="eager"
-             fetchpriority="high">
+<section class="relative bg-gradient-to-b from-lacos-marinho-suave to-white overflow-hidden">
+    <!-- Faixa com as 4 cores da marca -->
+    <div class="flex h-1.5">
+        <span class="flex-1 bg-lacos-vermelho"></span><span class="flex-1 bg-lacos-azul"></span><span class="flex-1 bg-lacos-verde"></span><span class="flex-1 bg-lacos-amarelo"></span>
     </div>
 
-    <!-- Escurecimento neutro sutil (sem tingir a foto de azul) -->
-    <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/20 to-black/45"></div>
-
-    <!-- Padrão decorativo de fundo (suave) -->
-    <div class="absolute inset-0 z-20 opacity-[0.08]">
-        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
-            <pattern id="ajudeBannerDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="20" cy="20" r="1.5" fill="white"/>
-            </pattern>
-            <rect width="200" height="200" fill="url(#ajudeBannerDots)"/>
-        </svg>
-    </div>
-
-    <div class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
-        <div class="max-w-3xl mx-auto text-center">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-                Cada menina merece <br class="hidden sm:block">um lugar para crescer
-            </h1>
-
-            <p class="text-lg sm:text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow">
-                Há anos, famílias de Brasília constroem juntas os clubes da Laços. Com a sua ajuda, esse trabalho chega a mais meninas.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="{{ url_for('public.quem_somos') }}"
-                   class="inline-flex items-center gap-2 bg-white text-lacos-marinho px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-soft-lg">
-                    Conheça a Laços
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                    </svg>
-                </a>
-                <a href="{{ url_for('public.clubes_lista') }}"
-                   class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white border-2 border-white/40 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/20 transition">
-                    Ver os Clubes
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Onda decorativa -->
-    <div class="absolute z-30 bottom-0 left-0 right-0 leading-[0]">
-        <svg class="w-full h-12 md:h-20" viewBox="0 0 1440 100" preserveAspectRatio="none">
-            <path fill="#FFFFFF" d="M0,50 C360,100 720,0 1440,50 L1440,100 L0,100 Z"/>
-        </svg>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 md:pt-16 md:pb-10 text-center">
+        <img src="{{ url_for('static', filename='img/logo-lacos.png') }}"
+             alt="Logo da Associação Laços"
+             class="h-16 md:h-20 w-auto mx-auto mb-5">
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-lacos-vermelho mb-3">Doações</p>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-lacos-marinho leading-tight mb-4">
+            Ajude a Laços
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            Cada menina merece um lugar para crescer. Conheça nossa história e veja como a sua ajuda faz diferença.
+        </p>
     </div>
 </section>
 
 <!-- ============================================
      NOSSA HISTÓRIA
      ============================================ -->
-<section id="historia" class="py-16 md:py-24 bg-white scroll-mt-20">
+<section id="historia" class="pt-6 pb-16 md:pt-10 md:pb-24 bg-white scroll-mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
