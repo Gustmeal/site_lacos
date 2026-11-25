@@ -220,6 +220,19 @@ def contato():
     return render_template("pages/contato.html")
 
 
+@public_bp.route("/ajude-a-lacos")
+def ajude():
+    """Página de doações. A chave PIX vem da variável de ambiente PIX_CHAVE;
+    enquanto ela não existir, a página mostra o aviso de 'em breve'."""
+    import os
+    from app.data.clubes_data import get_todos_clubes
+    return render_template(
+        "pages/ajude.html",
+        pix_chave=os.environ.get("PIX_CHAVE", "").strip(),
+        clubes=get_todos_clubes(),
+    )
+
+
 # ============================================
 # SEO: sitemap.xml e robots.txt
 # ============================================
@@ -239,6 +252,7 @@ def sitemap():
         (url_for("public.atividades"), "0.7"),
         (url_for("public.eventos_lista"), "0.7"),
         (url_for("public.contato"), "0.6"),
+        (url_for("public.ajude"), "0.7"),
         (url_for("public.termos_de_uso"), "0.3"),
         (url_for("public.politica_privacidade"), "0.3"),
     ]
