@@ -11,10 +11,6 @@
     .reveal.visivel { opacity: 1; transform: none; }
     .reveal-d1 { transition-delay: .1s; } .reveal-d2 { transition-delay: .2s; } .reveal-d3 { transition-delay: .3s; }
 
-    /* Laços (fitas) desenhando no hero */
-    .fita { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: desenhaFita 2.6s ease-out forwards; }
-    .fita-2 { animation-delay: .25s; } .fita-3 { animation-delay: .5s; } .fita-4 { animation-delay: .75s; }
-    @keyframes desenhaFita { to { stroke-dashoffset: 0; } }
 
     /* Batida suave do coração do botão principal */
     @keyframes batida { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.18); } 30% { transform: scale(1); } 45% { transform: scale(1.12); } }
@@ -31,7 +27,7 @@
     details[open] .faq-seta { transform: rotate(180deg); }
 
     @media (prefers-reduced-motion: reduce) {
-        .reveal, .fita, .coracao, .faixa-logos { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+        .reveal, .coracao, .faixa-logos { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
     }
 </style>
 {% endblock %}
@@ -39,46 +35,61 @@
 {% block content %}
 
 <!-- ============================================
-     HERO
+     HERO (mesmo formato do banner da home)
      ============================================ -->
 <section class="relative text-white overflow-hidden">
-    <img src="{{ url_for('static', filename='img/banner-home.webp') }}"
-         alt="Associadas, monitoras e famílias da Laços reunidas"
-         class="absolute inset-0 w-full h-full object-cover object-[center_65%]"
-         loading="eager" fetchpriority="high">
-    <!-- Escurecimento neutro sutil, igual ao banner da home (sem tingir a foto de azul) -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/45"></div>
-    <!-- Sombra preta só do lado do texto, para leitura (a foto continua com as cores naturais) -->
-    <div class="absolute inset-0 bg-black/25 md:bg-transparent md:bg-gradient-to-r md:from-black/60 md:via-black/25 md:to-transparent"></div>
 
-    <!-- Fitas coloridas da marca -->
-    <svg class="absolute -right-24 -bottom-10 w-[620px] max-w-none opacity-90 hidden md:block" viewBox="0 0 600 400" fill="none" aria-hidden="true">
-        <path class="fita" d="M20 300 C120 120, 260 380, 330 210 S 520 60, 590 160" stroke="#F23D50" stroke-width="10" stroke-linecap="round"/>
-        <path class="fita fita-2" d="M10 340 C140 170, 280 400, 350 250 S 530 110, 600 210" stroke="#288ECE" stroke-width="10" stroke-linecap="round"/>
-        <path class="fita fita-3" d="M0 380 C150 220, 300 420, 370 290 S 540 160, 610 260" stroke="#70C148" stroke-width="10" stroke-linecap="round"/>
-        <path class="fita fita-4" d="M-10 420 C160 270, 320 440, 390 330 S 550 210, 620 310" stroke="#FFBC3A" stroke-width="10" stroke-linecap="round"/>
-    </svg>
+    <!-- Imagem de fundo -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ url_for('static', filename='img/banner-ajude.webp') }}"
+             alt="Associadas, monitoras e famílias da Laços reunidas"
+             class="w-full h-full object-cover"
+             loading="eager"
+             fetchpriority="high">
+    </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
-        <div class="max-w-2xl">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]">
-                Cada menina merece um lugar para <span class="text-lacos-amarelo">crescer</span>
+    <!-- Escurecimento neutro sutil (sem tingir a foto de azul) -->
+    <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/20 to-black/45"></div>
+
+    <!-- Padrão decorativo de fundo (suave) -->
+    <div class="absolute inset-0 z-20 opacity-[0.08]">
+        <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+            <pattern id="ajudeBannerDots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="1.5" fill="white"/>
+            </pattern>
+            <rect width="200" height="200" fill="url(#ajudeBannerDots)"/>
+        </svg>
+    </div>
+
+    <div class="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-36">
+        <div class="max-w-3xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+                Cada menina merece <br class="hidden sm:block">um lugar para crescer
             </h1>
-            <p class="text-lg md:text-xl text-white leading-relaxed mb-10 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
-                Há anos, famílias de Brasília constroem juntas os clubes da Laços: espaços de amizade, virtudes e alegria para meninas e jovens. Com a sua ajuda, esse trabalho chega a mais famílias.
+
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow">
+                Há anos, famílias de Brasília constroem juntas os clubes da Laços. Com a sua ajuda, esse trabalho chega a mais meninas.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <a href="#historia"
-                   class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/20 transition">
-                    Conheça nossa história
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="{{ url_for('public.quem_somos') }}"
+                   class="inline-flex items-center gap-2 bg-white text-lacos-marinho px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-soft-lg">
+                    Conheça a Laços
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                    </svg>
+                </a>
+                <a href="{{ url_for('public.clubes_lista') }}"
+                   class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white border-2 border-white/40 px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/20 transition">
+                    Ver os Clubes
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Onda na base -->
-    <div class="absolute bottom-0 left-0 right-0 leading-[0]">
-        <svg class="w-full h-12 md:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <!-- Onda decorativa -->
+    <div class="absolute z-30 bottom-0 left-0 right-0 leading-[0]">
+        <svg class="w-full h-12 md:h-20" viewBox="0 0 1440 100" preserveAspectRatio="none">
             <path fill="#FFFFFF" d="M0,50 C360,100 720,0 1440,50 L1440,100 L0,100 Z"/>
         </svg>
     </div>
